@@ -14,9 +14,9 @@ connection.connect((err) => err && console.log(err));
 
 
 // SQL query-1: GET /top5/:indicator
+// For a given indicator, taken average over 2008-2016, find five countries which rank on top
 const top5 = async function (req, res) {
-  // TODO (TASK 7): implement a route that given an album_id, returns all songs on that album ordered by track number (ascending)
-  //res.json([]); // replace this with your implementation
+
   const indicator = req.params.indicator;
   connection.query(`
                     SELECT region,
@@ -46,9 +46,115 @@ const top5 = async function (req, res) {
       res.json(data);
     }
   });
-
-
 }
+
+// SQL query-2: GET /cont_trend/:indicator
+// For a selected indicator, how the continents are trending through 2008- 2016.
+const cont_trend = async function (req, res) {
+
+  const indicator = req.params.indicator;
+  connection.query(`
+                      SELECT region,
+                              AVG(s.2008),
+                              AVG(s.2009),
+                              AVG(s.2010),
+                              AVG(s.2011),
+                              AVG(s.2012),
+                              AVG(s.2013),
+                              AVG(s.2014),
+                              AVG(s.2015),
+                              AVG(s.2016)
+                      FROM Countries c
+                        JOIN Statistics s
+                            ON c.name_3_char = s.country_code
+                        JOIN Regions r
+                            ON c.sub_region = r.sub_region
+                        JOIN Indicators i
+                            ON i.indicator_code = s.indicator_code
+                      WHERE s.indicator_code = "${indicator}"
+                      GROUP BY region;
+                    `, (err, data) => {
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+}
+
+// SQL query-3: GET /cont_trend/:indicator
+// List all countries that have higher values than the selected country for a selected indicator in 2016, sort from highest to lowest (Home Page)
+const higher_values = async function (req, res) {
+
+  const indicator = req.params.indicator;
+  const region = req.params.region;
+
+  connection.query(`
+                    SELECT c.name_long,
+                      (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014 + s.2015 + s.2016) / 9 AS average
+                    FROM Statistics s
+                      JOIN Countries c ON s.country_code = c.name_3_char
+                      JOIN Indicators i ON i.indicator_code = s.indicator_code
+                      JOIN Regions r ON r.sub_region = c.sub_region
+                    WHERE i.indicator_code = "${indicator}"
+                      AND r.region = "${region}"
+                    ORDER BY average DESC
+                    LIMIT 5;
+
+                    `, (err, data) => {
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+}
+
+// SQL query-4: GET /averages/:indicator/:region
+// Pull averages for statistics/indicators for all regions based on a selected indicator. (Region Page)
+const averages = async function (req, res) {
+
+  const indicator = req.params.indicator;
+  const region = req.params.region;
+
+  connection.query(`
+                      SELECT region,
+                        AVG(s.2008),
+                        AVG(s.2009),
+                        AVG(s.2010),
+                        AVG(s.2011),
+                        AVG(s.2012),
+                        AVG(s.2013),
+                        AVG(s.2014),
+                        AVG(s.2015),
+                        AVG(s.2016)
+                      FROM Countries c
+                        JOIN Statistics s
+                          ON c.name_3_char = s.country_code
+                        JOIN Regions r
+                          ON c.sub_region = r.sub_region
+                        JOIN Indicators i
+                          ON i.indicator_code = s.indicator_code
+                        WHERE s.indicator_code = "${indicator}"
+                        GROUP BY region;
+
+                                        `, (err, data) => {
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+}
+
+
+
+/******************
+ * HOMEWORK CODE LEFT BELOW TO REFERENCE AS EXAMPLES *
+ ******************/
 
 
 
