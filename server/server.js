@@ -18,12 +18,14 @@ app.get('/top5/:indicator', routes.top5);
 app.get('/cont_trend/:indicator', routes.cont_trend);
 
 //SQL query-3
-app.get('/random', routes.random);
+app.get('/higher_values/:indicator/:region', routes.higher_values);
 
 //SQL query-4
-app.get('/random', routes.random);
+app.get('/averages/:indicator/:region', routes.averages);
 
 
+
+// HW CODE FOR REFERENCE
 app.get('/song/:song_id', routes.song);
 app.get('/album/:album_id', routes.album);
 app.get('/albums', routes.albums);
