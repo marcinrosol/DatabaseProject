@@ -23,6 +23,14 @@ app.get('/higher_values/:indicator/:region', routes.higher_values);
 //SQL query-4
 app.get('/averages/:indicator/:region', routes.averages);
 
+//SQL query-5
+//Average across years
+app.get('/countries/:indicator/:country', routes.higherCountries);
+
+//For a particular year
+app.get('/countries/:indicator/:country/:year', routes.higherCountriesPerYear);
+
+
 
 
 // HW CODE FOR REFERENCE
