@@ -38,13 +38,13 @@ export default function HomePage() {
     // and an optional renderCell property which given a row returns a custom JSX element to display in the cell.
     const top5 = [
         {
-            field: 'title',
-            headerName: 'Song Title',
-            renderCell: (row) => <Link onClick={() => setSelectedSongId(row.song_id)}>{row.title}</Link> // A Link component is used just for formatting purposes
+            field: 'Random',
+            headerName: 'Random Indicator',
+            renderCell: (row) => <Link onClick={() => setRandomIndicator()}>{}</Link> // A Link component is used just for formatting purposes
         },
         {
-            field: 'album',
-            headerName: 'Album',
+            field: 'Averages',
+            headerName: 'Average',
             renderCell: (row) => <NavLink to={`/albums/${row.album_id}`}>{row.album}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
@@ -55,10 +55,10 @@ export default function HomePage() {
 
     // TODO (TASK 15): define the columns for the top albums (schema is Album Title, Plays), where Album Title is a link to the album page
     // Hint: this should be very similar to songColumns defined above, but has 2 columns instead of 3
-    const albumColumns = [
+    const indicatorColumns = [
         {
-            field: 'album',
-            headerName: 'Album',
+            field: 'Averages',
+            headerName: 'Averages',
             renderCell: (row) => <NavLink to={`/albums/${row.album_id}`}>{row.album}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
