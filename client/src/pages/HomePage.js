@@ -32,38 +32,47 @@ export default function HomePage() {
             .then(resJson => setAverages(resJson));
     }, []);
 
-    // Here, we define the columns of the "Top Songs" table. The songColumns variable is an array (in order)
-    // of objects with each object representing a column. Each object has a "field" property representing
-    // what data field to display from the raw data, "headerName" property representing the column label,
-    // and an optional renderCell property which given a row returns a custom JSX element to display in the cell.
-    const top5 = [
-        {
-            field: 'Random',
-            headerName: 'Random Indicator',
-            renderCell: (row) => <Link onClick={() => setRandomIndicator()}>{}</Link> // A Link component is used just for formatting purposes
-        },
-        {
-            field: 'Averages',
-            headerName: 'Average',
-            renderCell: (row) => <NavLink to={`/albums/${row.album_id}`}>{row.album}</NavLink> // A NavLink component is used to create a link to the album page
-        },
-        {
-            field: 'plays',
-            headerName: 'Plays'
-        },
-    ];
 
     // TODO (TASK 15): define the columns for the top albums (schema is Album Title, Plays), where Album Title is a link to the album page
     // Hint: this should be very similar to songColumns defined above, but has 2 columns instead of 3
-    const indicatorColumns = [
+    const top5Regions = [
         {
             field: 'Averages',
-            headerName: 'Averages',
-            renderCell: (row) => <NavLink to={`/albums/${row.album_id}`}>{row.album}</NavLink> // A NavLink component is used to create a link to the album page
+            headerName: 'Averages (2008-2016)',
+            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
-            field: 'plays',
-            headerName: 'Plays'
+            field: 'Region',
+            headerName: 'Region',
+            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+
+        },
+    ];
+
+    const top5SubRegions = [
+        {
+            field: 'Averages',
+            headerName: 'Averages (2008-2016)',
+            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+        },
+        {
+            field: 'SubRegion',
+            headerName: 'Averages (2008-2016)',
+            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+
+        },
+    ];
+
+    const top5Countries = [
+        {
+            field: 'Averages',
+            headerName: 'Averages (2008-2016)',
+            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+        },
+        {
+            field: 'Country',
+            headerName: 'Averages (2008-2016)',
+            renderCell: (row) => <NavLink to={`/countries/:indicator/:country${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];
@@ -71,20 +80,24 @@ export default function HomePage() {
     return (
         <Container>
             {/* SongCard is a custom component that we made. selectedSongId && <SongCard .../> makes use of short-circuit logic to only render the SongCard if a non-null song is selected */}
-            {selectedSongId && <SongCard songId={selectedSongId} handleClose={() => setSelectedSongId(null)} />}
+            {randomIndicator && <SongCard random={randomIndicator} handleClose={() => setRandomIndicator(null)} />}
             <h2>Generate Random Indicator:&nbsp;
                 <Link onClick={() => setRandomIndicator()}>{randomIndicator}</Link>
             </h2>
             <Divider />
-            <h2>Top 5 </h2>
-            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/:indicator`} columns={songColumns} />
+            <h2>Top 5 Regions </h2>
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/:indicator`} columns={top5Regions} />
             <Divider />
             {/* TODO (TASK 16): add a h2 heading, LazyTable, and divider for top albums. Set the LazyTable's props for defaultPageSize to 5 and rowsPerPageOptions to [5, 10] */}
-            <h2>Top Regions</h2>
-            <LazyTable route={`http://${config.server_host}:${config.server_port}/cont_trend/:indicator`} columns={albumColumns} defaultPageSize={5} rowsPerPageOptions={[5,10]} />
+            <h2>Top 5 Sub Regions</h2>
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/cont_trend/:indicator`} columns={top5SubRegions} defaultPageSize={5} rowsPerPageOptions={[5,10]} />
+            <Divider />
+            <Divider />
+            {/* TODO (TASK 16): add a h2 heading, LazyTable, and divider for top albums. Set the LazyTable's props for defaultPageSize to 5 and rowsPerPageOptions to [5, 10] */}
+            <h2>Top 5 Countries</h2>
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/countries/:indicator/:country`} columns={albumColumns} defaultPageSize={5} rowsPerPageOptions={[5,10]} />
             <Divider />
             {/* TODO (TASK 17): add a paragraph (<p>text</p>) that displays the value of your author state variable from TASK 13 */}
-            <p>{appAuthor}</p>
         </Container>
     );
 };
