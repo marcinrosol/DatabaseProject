@@ -13,21 +13,59 @@ const connection = mysql.createConnection({
 connection.connect((err) => err && console.log(err));
 
 
-// SQL query-1: GET /top5/:indicator
-// For a given indicator, taken average over 2008-2016, find five countries which rank on top
+/************************
+ * Home Page *
+ ************************/
+
+
+// GET /random
+// Query 1: Generate a random indicator
+const random = async function (req, res) {
+
+  connection.query(`
+                    SELECT indicator_name
+                    FROM Indicators
+                    ORDER BY RAND()
+                    LIMIT 1
+                  `, (err, data) => {
+    if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
+      console.log(err);
+      res.json({});
+    } else {
+      res.json({ data });
+    }
+  });
+}
+
+// GET /top5/:indicator
+// Query 2: Based on generated indicator and average for years 2008-2016, list top 5 regions
 const top5 = async function (req, res) {
 
   const indicator = req.params.indicator;
+
   connection.query(`
-                      SELECT c.name_long,
-                        (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014 + s.2015 + s.2016) / 9 AS average
-                      FROM Statistics s
-                        JOIN Countries c ON s.country_code = c.name_3_char
-                        JOIN Indicators i ON i.indicator_code = s.indicator_code
-                      WHERE i.indicator_code = "${indicator}"
-                      ORDER BY average DESC
-                      LIMIT 5;`
-                      , (err, data) => {
+                    SELECT region,
+                            AVG(s.2008),
+                            AVG(s.2009),
+                            AVG(s.2010),
+                            AVG(s.2011),
+                            AVG(s.2012),
+                            AVG(s.2013),
+                            AVG(s.2014),
+                            AVG(s.2015),
+                            AVG(s.2016)
+                  FROM Countries c
+                    JOIN Statistics s
+                      ON c.name_3_char = s.country_code
+                    JOIN Regions r
+                      ON c.sub_region = r.sub_region
+                    JOIN Indicators i
+                      ON i.indicator_code = s.indicator_code
+                  WHERE s.indicator_code = "${indicator}"
+                  GROUP BY region;
+                    `, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -37,32 +75,25 @@ const top5 = async function (req, res) {
   });
 }
 
-// SQL query-2: GET /cont_trend/:indicator
-// For a selected indicator, how the continents are trending through 2008- 2016.
-const cont_trend = async function (req, res) {
+// GET /top5subregion/:indicator
+// Query 3: Based on generated indicator and average for years 2008-2016, list top 5 sub-regions
+const top5subregion = async function (req, res) {
 
   const indicator = req.params.indicator;
   connection.query(`
-                      SELECT region,
-                        AVG(s.2008),
-                        AVG(s.2009),
-                        AVG(s.2010),
-                        AVG(s.2011),
-                        AVG(s.2012),
-                        AVG(s.2013),
-                        AVG(s.2014),
-                        AVG(s.2015),
-                        AVG(s.2016)
-                      FROM Countries c
-                        JOIN Statistics s
-                          ON c.name_3_char = s.country_code
-                        JOIN Regions r
-                          ON c.sub_region = r.sub_region
-                        JOIN Indicators i
-                          ON i.indicator_code = s.indicator_code
-                        WHERE s.indicator_code = "${indicator}"
-                        GROUP BY region;`
-                        , (err, data) => {
+  SELECT c.sub_region,
+  (avg(s.2008) + avg(s.2009) + avg(s.2010) + avg(s.2011) + avg(s.2012) +
+   avg(s.2013) + avg(s.2014) + avg(s.2015) + avg(s.2016))/9 AS AVG
+FROM Statistics s
+    JOIN Countries c ON s.country_code = c.name_3_char
+    JOIN Indicators i ON i.indicator_code = s.indicator_code
+    JOIN Regions r ON r.sub_region = c.sub_region
+WHERE i.indicator_code = "${indicator}"
+GROUP BY c.sub_region
+ORDER BY AVG DESC
+LIMIT 5;
+
+                    `, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -72,135 +103,348 @@ const cont_trend = async function (req, res) {
   });
 }
 
-// SQL query-3: GET /cont_trend/:indicator
-// For a selected indicator and a selected region, how the sub-regions compare (calculate average for years 2008-2016).
+// GET /top5countries/:indicator
+// Query 4: Based on generated indicator and average for years 2008-2016, list top 5 sub-regions
+const top5countries = async function (req, res) {
 
-const higher_values = async function (req, res) {
+  const indicator = req.params.indicator;
+  connection.query(`
+  SELECT c.name_long, (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014 + s.2015 + s.2016) / 9 AS AVG
+FROM Statistics s
+JOIN Countries c ON s.country_code = c.name_3_char
+JOIN Indicators i ON i.indicator_code = s.indicator_code
+WHERE i.indicator_code = "${indicator}"
+ORDER BY average DESC
+LIMIT 5;
 
+
+                    `, (err, data) => {
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+}
+
+/************************
+ * Regions  Page *
+ ************************/
+
+// GET /randomIndCat
+// Query 5: Generate a list of Indicator Categories
+const randomIndCat = async function (req, res) {
+
+  connection.query(`
+  SELECT DISTINCT category
+  FROM Indicators
+  ORDER BY category;
+  
+                  `, (err, data) => {
+    if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
+      console.log(err);
+      res.json({});
+    } else {
+      res.json({ data });
+    }
+  });
+}
+
+// GET /indicatorsOnCat/:category
+// Query 6: Generate a list of Indicators based on a selected Category
+const indicatorsOnCat = async function (req, res) {
+  const category = req.params.category;
+  connection.query(`
+  SELECT indicator_name
+FROM Indicators
+WHERE category= "${category}"
+ORDER BY indicator_name; 
+                  `, (err, data) => {
+    if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
+      console.log(err);
+      res.json({});
+    } else {
+      res.json({ data });
+    }
+  });
+}
+
+// GET /regions
+// Query 7: Generate a list of Regions
+const regions = async function (req, res) {
+  const category = req.params.category;
+  connection.query(`
+  SELECT DISTINCT region
+FROM Regions
+ORDER BY region;
+
+                  `, (err, data) => {
+    if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
+      console.log(err);
+      res.json({});
+    } else {
+      res.json({ data });
+    }
+  });
+}
+
+// GET /compare/:indicator/:region
+// Query 8: For a selected indicator and region, how the sub-regions are comparing on average 2008-2016
+const compare = async function (req, res) {
   const indicator = req.params.indicator;
   const region = req.params.region;
-
   connection.query(`
-                    SELECT c.sub_region,
-                      (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014
-                      + s.2015 + s.2016) / 9 AS average
-                    FROM Statistics s
-                      JOIN Countries c ON s.country_code = c.name_3_char
-                      JOIN Indicators i ON i.indicator_code = s.indicator_code
-                      JOIN Regions r ON r.sub_region = c.sub_region
-                    WHERE i.indicator_code = "${indicator}"
-                    AND r.region = "${region}"
-                    GROUP BY c.sub_region
-                    ORDER BY average DESC
-                    LIMIT 5;`
-                    , (err, data) => {
+  SELECT c.sub_region,
+  (AVG(s.2008) + AVG(s.2009) + AVG(s.2010) + AVG(s.2011) + AVG(s.2012) + AVG(s.2013) + AVG(s.2014) + AVG(s.2015) + AVG(s.2016))/9 AS Avg
+FROM Countries c JOIN Statistics s
+ON c.name_3_char = s.country_code
+JOIN Regions r
+ON c.sub_region = r.sub_region
+JOIN Indicators i
+ON i.indicator_code = s.indicator_code
+WHERE i.indicator_name = "${indicator}"
+AND r.region = "${region}"
+GROUP BY sub_region
+ORDER BY AVG DESC;
+;
+
+                  `, (err, data) => {
     if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
       console.log(err);
       res.json({});
     } else {
-      res.json(data);
+      res.json({ data });
     }
   });
 }
 
-// SQL query-4: GET /averages/:indicator/:region
-// For a selected indicator and a selected region, how the countries compare (calculate average for years 2008-2016) and list only top 5 countries.
-const averages = async function (req, res) {
-
+// GET /compareOnAvg/:indicator
+// Query 9: For a selected indicator and region, how the sub-regions are comparing on average 2008-2016
+const compareOnAvg = async function (req, res) {
   const indicator = req.params.indicator;
-  const region = req.params.region;
 
   connection.query(`
-                    SELECT c.name_long,
-                      (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014 + s.2015 + s.2016) / 9 AS average
-                    FROM Statistics s
-                      JOIN Countries c ON s.country_code = c.name_3_char
-                      JOIN Indicators i ON i.indicator_code = s.indicator_code
-                      JOIN Regions r ON r.sub_region = c.sub_region
-                    WHERE i.indicator_code = "${indicator}"
-                    AND r.region = "${region}"
-                    ORDER BY average DESC
-                    LIMIT 5;`
-                    , (err, data) => {
+  SELECT region,
+(AVG(s.2008) + AVG(s.2009) + AVG(s.2010) + AVG(s.2011) + AVG(s.2012) + AVG(s.2013) + AVG(s.2014) + AVG(s.2015) + AVG(s.2016)) / 9 AS Avg
+FROM Countries c JOIN Statistics s
+ON c.name_3_char = s.country_code
+JOIN Regions r
+ON c.sub_region = r.sub_region
+JOIN Indicators i
+ON i.indicator_code = s.indicator_code
+WHERE s.indicator_code = "${indicator}"
+GROUP BY region
+ORDER BY AVG DESC;
+
+;
+
+                  `, (err, data) => {
     if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
       console.log(err);
       res.json({});
     } else {
-      res.json(data);
+      res.json({ data });
     }
   });
 }
 
-const higherCountries = async function (req, res) {
+/************************
+ * Sub-Regions  Page *
+ ************************/
 
+// Query 10 (same as Query 5): Generate a list of Indicator Categories
+// Query 11 (same as Query 6): Generate a list of Indicators based on a selected Category
+// GET /subregions
+// Query 12: Generate a list of Regions
+const subregions = async function (req, res) {
+
+  connection.query(`
+  SELECT DISTINCT sub_region
+FROM Regions
+ORDER BY sub_region;
+
+                  `, (err, data) => {
+    if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
+      console.log(err);
+      res.json({});
+    } else {
+      res.json({ data });
+    }
+  });
+}
+
+// Query 13: For a selected indicator and sub-region, how the countries are comparing on average 2008-2016
+const compareOnAvgSub = async function (req, res) {
+  const indicator = req.params.indicator;
+  const subregion = req.params.subregion;
+
+  connection.query(`
+  SELECT c.name_long,
+ (AVG(s.2008) + AVG(s.2009) + AVG(s.2010) + AVG(s.2011) + AVG(s.2012) + AVG(s.2013) + AVG(s.2014) + AVG(s.2015) + AVG(s.2016))/9 AS Avg
+FROM Countries c JOIN Statistics s
+ON c.name_3_char = s.country_code
+JOIN Indicators i
+ON i.indicator_code = s.indicator_code
+WHERE i.indicator_name = "${indicator}"
+AND c.sub_region = "${subregion}"
+GROUP BY c.name_long
+ORDER BY AVG DESC;
+
+
+                  `, (err, data) => {
+    if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
+      console.log(err);
+      res.json({});
+    } else {
+      res.json({ data });
+    }
+  });
+}
+
+
+// Query 14: For a selected indicator, how the sub-regions are comparing on average 2008- 2016.
+const compareSubs = async function (req, res) {
+  const indicator = req.params.indicator;
+
+  connection.query(`
+  SELECT c.sub_region,
+(AVG(s.2008) + AVG(s.2009) + AVG(s.2010) + AVG(s.2011) + AVG(s.2012) + AVG(s.2013) + AVG(s.2014) + AVG(s.2015) + AVG(s.2016)) / 9 AS Avg
+FROM Countries c JOIN Statistics s
+ON c.name_3_char = s.country_code
+JOIN Regions r
+ON c.sub_region = r.sub_region
+JOIN Indicators i
+ON i.indicator_code = s.indicator_code
+WHERE i.indicator_name = "${indicator}"
+GROUP BY c.sub_region
+ORDER BY Avg DESC;
+
+
+
+                  `, (err, data) => {
+    if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
+      console.log(err);
+      res.json({});
+    } else {
+      res.json({ data });
+    }
+  });
+}
+
+
+/************************
+ * Countries  Page *
+ ************************/
+
+
+// Query 17: Generate a list of Countries
+const countries = async function (req, res) {
+
+  connection.query(`
+  SELECT DISTINCT name_long
+FROM Countries
+ORDER BY name_long;
+
+
+                  `, (err, data) => {
+    if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
+      console.log(err);
+      res.json({});
+    } else {
+      res.json({ data });
+    }
+  });
+}
+
+// Query 18: List all countries (in the selected Country’s sub-region) that have average (years 2008-2016) higher values than the selected country’s average for a selected indicator, sort from highest to lowest
+const avgHigher = async function (req, res) {
   const indicator = req.params.indicator;
   const country = req.params.country;
 
   connection.query(`
-                    SELECT c.name_long, (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014
-                    + s.2015 + s.2016)/9 AS average
-                    FROM Statistics s
-                    JOIN Countries c
-                      ON s.country_code = c.name_3_char
-                    WHERE s.indicator_code = "${indicator}"
-                    AND c.sub_region =
-                      (SELECT c.sub_region FROM Countries c WHERE c.name_long = "${country}")
-                    AND (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014
-                    + s.2015 + s.2016)/9
-                    >
-                    (SELECT (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014
-                    + s.2015 + s.2016)/9 AS avg
-                      FROM Statistics s JOIN Countries c
-                      ON s.country_code = c.name_3_char
-                      JOIN Indicators i ON i.indicator_code = s.indicator_code
-                      WHERE s.indicator_code = "${indicator}"
-                    AND c.name_long = "${country}")
-                    ORDER BY s.2016 DESC;`
-                                    , (err, data) => {
+  SELECT c.name_long, (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014 + s.2015 + s.2016)/9 AS average
+FROM Statistics s JOIN Countries c
+ON s.country_code = c.name_3_char
+WHERE s.indicator_code = "${indicator}"
+AND c.sub_region =
+(SELECT c.sub_region FROM Countries c WHERE c.name_long = "${country}")
+AND (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014
++ s.2015 + s.2016) / 9 > 
+(SELECT (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014
++ s.2015 + s.2016)/9 AS avg
+FROM Statistics s JOIN Countries c
+ON s.country_code = c.name_3_char
+JOIN Indicators i ON i.indicator_code = s.indicator_code
+WHERE s.indicator_code = "${indicator}"
+AND c.name_long = "${country}")
+ORDER BY s.2016 DESC;
+
+
+
+                  `, (err, data) => {
     if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
       console.log(err);
       res.json({});
     } else {
-      res.json(data);
+      res.json({ data });
     }
   });
 }
 
-const higherCountriesPerYear = async function (req, res) {
+//Query 19: All indicators from a specified indicator category for all countries where gpi score is less than average (the smaller the score - the more peaceful the country is)..
+const peaceful = async function (req, res) {
+  const indicatorCat = req.params.indicatorCat;
 
-  const indicator = req.params.indicator;
-  const year = req.params.year;
-  const country = req.params.country;
 
   connection.query(`
-                      SELECT c.name_long, (s.${year})
-                      FROM Statistics s
-                        JOIN Countries c
-                         ON s.country_code = c.name_3_char
-                      WHERE s.indicator_code = "${indicator}"
-                      AND c.sub_region =
-                          (SELECT c.sub_region FROM Countries c WHERE c.name_long = "${country}")
-                      AND s.${year}
-                        >
-                        (SELECT s.${year}
-                        FROM Statistics s JOIN Countries c
-                        ON s.country_code = c.name_3_char
-                        JOIN Indicators i ON i.indicator_code = s.indicator_code
-                        WHERE s.indicator_code = "${indicator}"
-                      AND c.name_long = "${country}")
-                      ORDER BY s.${year}
-                      DESC;
-                      `
-                    , (err, data) => {
+  SELECT name_long, i.indicator_name, gpi_score, (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014
+    + s.2015 + s.2016)/9 AS average
+    FROM Countries c
+    JOIN Statistics s on c.name_3_char = s.country_code
+    JOIN Indicators i on i.indicator_code = s.indicator_code
+    WHERE i.category="${indicatorCat}"
+    AND gpi_score > 0
+    AND gpi_score <
+    (SELECT avg(gpi_score)
+    FROM Countries
+    WHERE gpi_score > 0)
+    ORDER BY gpi_score, name_long, indicator_name;
+    
+
+
+
+                  `, (err, data) => {
     if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
       console.log(err);
       res.json({});
     } else {
-      res.json(data);
+      res.json({ data });
     }
   });
 }
-
 
 /******************
  * HOMEWORK CODE LEFT BELOW TO REFERENCE AS EXAMPLES *
@@ -233,7 +477,7 @@ const author = async function (req, res) {
 }
 
 // Route 2: GET /random
-const random = async function (req, res) {
+const randomhw = async function (req, res) {
   // you can use a ternary operator to check the value of request query values
   // which can be particularly useful for setting the default value of queries
   // note if users do not provide a value for the query it will be undefined, which is falsey
@@ -356,17 +600,18 @@ const album_songs = async function (req, res) {
 const top_songs = async function (req, res) {
   const page = req.query.page;
   // TODO (TASK 8): use the ternary (or nullish) operator to set the pageSize based on the query or default to 10
-  const explicit = req.query.explicit === 'true' ? 1 : 0;
+  //const explicit = req.query.explicit === 'true' ? 1 : 0;
   const pageSize = req.query.page_size ?? 10;
 
   if (!page) {
     // TODO (TASK 9)): query the database and return all songs ordered by number of plays (descending)
     // Hint: you will need to use a JOIN to get the album title as well
     //res.json([]); // replace this with your implementation
-    connection.query(`SELECT S.song_id, S.title AS title, S.album_id, A.title AS album, S.plays
-    FROM Songs S JOIN Albums A ON S.album_id = A.album_id
-    ORDER BY S.plays DESC;`
-                        , (err, data) => {
+    connection.query(`
+                        SELECT S.song_id, S.title AS title, S.album_id, A.title AS album, S.plays
+                        FROM Songs S JOIN Albums A ON S.album_id = A.album_id
+                        ORDER BY S.plays DESC;
+                    `, (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
         res.json({});
@@ -381,10 +626,13 @@ const top_songs = async function (req, res) {
     //res.json([]); // replace this with your implementation
     //console.log(pageSize)
     //console.log(page)
-    connection.query(`SELECT S.song_id, S.title AS title, S.album_id, A.title AS album, S.plays FROM Songs S JOIN Albums A ON S.album_id = A.album_id
-    ORDER BY S.plays DESC
-    LIMIT ${pageSize} OFFSET ${pageSize * (page - 1)};`
-                      , (err, data) => {
+    connection.query(`
+                      SELECT S.song_id, S.title AS title, S.album_id, A.title AS album, S.plays
+                      FROM Songs S JOIN Albums A ON S.album_id = A.album_id
+                      ORDER BY S.plays DESC
+                      LIMIT ${pageSize} OFFSET ${pageSize * (page - 1)}
+                      ;
+                    `, (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
         res.json({});
@@ -491,4 +739,18 @@ module.exports = {
   top_songs,
   top_albums,
   search_songs,
+  top5,
+  top5subregion,
+  top5countries,
+  randomIndCat,
+  indicatorsOnCat,
+  regions,
+  compare,
+  compareOnAvg,
+  subregions,
+  compareOnAvgSub,
+  compareSubs,
+  countries,
+  avgHigher,
+  peaceful
 }
