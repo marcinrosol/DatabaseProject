@@ -29,7 +29,7 @@ export default function App() {
                 <NavBar />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/top5/:indicator" element={<CountryPage />} />
+                    <Route path="/countries/:indicator/:country" element={<CountryPage />} />
                     <Route path="/averages/:indicator/:region" element={<RegionPage />} />
                     <Route path="/cont_trend/:indicator" element={<SubregionPage />} />
                 </Routes>
