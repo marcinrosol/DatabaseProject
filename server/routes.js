@@ -46,25 +46,15 @@ const top5 = async function (req, res) {
   const indicator = req.params.indicator;
 
   connection.query(`
-                    SELECT region,
-                            AVG(s.2008),
-                            AVG(s.2009),
-                            AVG(s.2010),
-                            AVG(s.2011),
-                            AVG(s.2012),
-                            AVG(s.2013),
-                            AVG(s.2014),
-                            AVG(s.2015),
-                            AVG(s.2016)
-                  FROM Countries c
-                    JOIN Statistics s
-                      ON c.name_3_char = s.country_code
-                    JOIN Regions r
-                      ON c.sub_region = r.sub_region
-                    JOIN Indicators i
-                      ON i.indicator_code = s.indicator_code
+                    SELECT r.region,
+    (avg(s.2008) + avg(s.2009) + avg(s.2010) + avg(s.2011) + avg(s.2012) +
+     avg(s.2013) + avg(s.2014) + avg(s.2015) + avg(s.2016))/9 AS AVG
+FROM Statistics s
+      JOIN Countries c ON s.country_code = c.name_3_char
+      JOIN Indicators i ON i.indicator_code = s.indicator_code
+      JOIN Regions r ON r.sub_region = c.sub_region
                   WHERE s.indicator_code = "${indicator}"
-                  GROUP BY region;
+                  GROUP BY r.region;
                     `, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
