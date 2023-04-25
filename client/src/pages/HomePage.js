@@ -28,7 +28,7 @@ export default function HomePage() {
         fetch(`http://${config.server_host}:${config.server_port}/random`)
             .then(res => res.json())
             .then(resJson => setRandomIndicator(resJson));
-        document.title = `You clicked ${count} times`;
+        document.title = `DatabaseProject`;
         // TODO (TASK 14): add a fetch call to get the app author (name not pennkey) and store it in the state variable
         //fetch(`http://${config.server_host}:${config.server_port}/top5/BM_KLT_DINV_WD_GD_ZS/`)
         //    .then(res => res.json())
@@ -75,7 +75,7 @@ export default function HomePage() {
         <Container>
             <button onClick={() => setCount(count + 1)}>Generate Random Indicator</button>
             <h2>Randomly generated indicator is:&nbsp;
-                {randomIndicator.indicator_name} {randomIndicator.indicator_code}
+                {randomIndicator.indicator_name}
             </h2>
             <h1>Top 5 Regions</h1>
             <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/${randomIndicator.indicator_code}/`} columns={top5Regions} />
