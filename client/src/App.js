@@ -7,6 +7,7 @@ import CountryPage from './pages/CountryPage';
 import RegionPage from './pages/RegionPage';
 import SubregionPage from './pages/SubregionPage';
 import HomePage from './pages/HomePage';
+import NavBar from './components/NavBar';
 
 // createTheme enables you to customize the look and feel of your app past the default
 // in this case, we only change the color scheme
@@ -29,9 +30,9 @@ export default function App() {
                 <NavBar />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/countries/:indicator/:country" element={<CountryPage />} />
-                    <Route path="/averages/:indicator/:region" element={<RegionPage />} />
-                    <Route path="/cont_trend/:indicator" element={<SubregionPage />} />
+                    <Route path="/Country" element={<CountryPage />} />
+                    <Route path="/Region" element={<RegionPage />} />
+                    <Route path="/SubRegion" element={<SubregionPage />} />
                 </Routes>
             </BrowserRouter>
         </ThemeProvider>
