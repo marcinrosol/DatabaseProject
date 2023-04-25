@@ -50,30 +50,24 @@ export default function HomePage() {
 
     const top5SubRegions = [
         {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5subregion/BM_KLT_DINV_WD_GD_ZS/${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            field: 'sub',
+            headerName: 'SubRegion'
         },
         {
-            field: 'SubRegion',
-            headerName: 'SubRegion',
-            renderCell: (row) => <NavLink to={`/top5subregion/BM_KLT_DINV_WD_GD_ZS/${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-
+            field: 'AVG',
+            headerName: 'Averages (2008-2016)'
         },
     ];
 
     const top5Countries = [
         {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5countries/BM_KLT_DINV_WD_GD_ZS/${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            field: 'country',
+            headerName: 'Country'
         },
         {
-            field: 'Country',
-            headerName: 'Country',
-            renderCell: (row) => <NavLink to={`/top5countries/BM_KLT_DINV_WD_GD_ZS/${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-
-        },
+            field: 'AVG',
+            headerName: 'Averages (2008-2016)'
+        }
     ];
 
     return (

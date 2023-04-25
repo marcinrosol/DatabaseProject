@@ -77,7 +77,7 @@ const top5subregion = async function (req, res) {
 
   const indicator = req.params.indicator;
   connection.query(`
-  SELECT c.sub_region,
+  SELECT c.sub_region AS sub,
   (avg(s.2008) + avg(s.2009) + avg(s.2010) + avg(s.2011) + avg(s.2012) +
    avg(s.2013) + avg(s.2014) + avg(s.2015) + avg(s.2016))/9 AS AVG
 FROM Statistics s
@@ -85,7 +85,7 @@ FROM Statistics s
     JOIN Indicators i ON i.indicator_code = s.indicator_code
     JOIN Regions r ON r.sub_region = c.sub_region
 WHERE i.indicator_code = "${indicator}"
-GROUP BY c.sub_region
+GROUP BY sub
 ORDER BY AVG DESC
 LIMIT 5;
 
@@ -105,7 +105,7 @@ const top5countries = async function (req, res) {
 
   const indicator = req.params.indicator;
   connection.query(`
-  SELECT c.name_long, (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014 + s.2015 + s.2016) / 9 AS AVG
+  SELECT c.name_long AS country, (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014 + s.2015 + s.2016) / 9 AS AVG
 FROM Statistics s
 JOIN Countries c ON s.country_code = c.name_3_char
 JOIN Indicators i ON i.indicator_code = s.indicator_code
