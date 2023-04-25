@@ -114,7 +114,7 @@ FROM Statistics s
 JOIN Countries c ON s.country_code = c.name_3_char
 JOIN Indicators i ON i.indicator_code = s.indicator_code
 WHERE i.indicator_code = "${indicator}"
-ORDER BY average DESC
+ORDER BY AVG DESC
 LIMIT 5;
 
 
