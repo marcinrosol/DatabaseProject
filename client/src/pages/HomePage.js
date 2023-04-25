@@ -73,7 +73,7 @@ export default function HomePage() {
 
     return (
         <Container>
-            <button onClick={() => setCount(count + 1)}>Generate Random Indicator</button>;
+            <button onClick={() => setCount(count + 1)}>Generate Random Indicator</button>
             <h2>Randomly generated indicator is:&nbsp;
                 {randomIndicator.indicator_name}
             </h2>
