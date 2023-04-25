@@ -61,9 +61,9 @@ export default function LazyTable({ route, columns, defaultPageSize, rowsPerPage
                             {
                                 // TODO (TASK 19): the next 3 lines of code render only the first column. Modify this with a map statement to render all columns.
                                 // Hint: look at how we structured the map statement to render all the table headings within the <TableHead> element
-                                columns.map(col =><TableCell key={col.headerName}>{col.headerName}>
+                                columns.map(col =><TableCell key={col.headerName}>
                                     {/* Note the following ternary statement renders the cell using a custom renderCell function if defined, or defaultRenderCell otherwise */}
-                                    {columns[0].renderCell ? columns[0].renderCell(row) : defaultRenderCell(columns[0], row)}
+                                    {col.renderCell ? col.renderCell(row) : defaultRenderCell(col, row)}
                                 </TableCell>)
                             }
                         </TableRow>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Container, Divider, Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-
+import * as React from 'react';
+import { DataGrid, GridRowsProp, GridColDef} from '@mui/x-data-grid';
 import LazyTable from '../components/LazyTable';
 import SongCard from '../components/SongCard';
 const config = require('../config.json');
@@ -39,14 +40,11 @@ export default function HomePage() {
     const top5Regions = [
         {
             field: 'region',
-            headerName: 'Region',
-            renderCell: (row) => <NavLink>{row.region}</NavLink> // A NavLink component is used to create a link to the album page
-
+            headerName: 'Region'
         },
         {
             field: 'AVG',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink>{row.AVG}</NavLink> // A NavLink component is used to create a link to the album page
+            headerName: 'Averages (2008-2016)'
         },
     ];
 
