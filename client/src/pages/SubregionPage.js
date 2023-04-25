@@ -79,7 +79,31 @@ export default function SubregionPage() {
 
     return (
         <Container>
-            <h1>This is the Sub Region page</h1>
+            <h1>This is the Region page</h1>
+            <div>
+                <label>
+                    Select Indicator Category
+                    <select>
+                        <option value="randomIndicator">{setRandomIndicator}</option>
+                    </select>
+                </label>
+                <label>
+                    Select Indicator
+                    <select>
+                        <option value="randomIndicator">{setRandomIndicator}</option>
+                    </select>
+                </label>
+                <label>
+                    Select Region
+                    <select>
+                        <option value="top5Regions">{setRegion}</option>
+                    </select>
+                </label>
+                <h1>Country and Average</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5countries/:indicator`} columns={top5Countries} />
+                <h1>Subregion and Average</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5subregion/:indicator`} columns={top5SubRegions} />
+            </div>
         </Container>
     );
 };

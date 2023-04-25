@@ -80,6 +80,30 @@ export default function RegionPage() {
     return (
         <Container>
             <h1>This is the Region page</h1>
+            <div>
+                <label>
+                    Select Indicator Category
+                    <select>
+                        <option value="randomIndicator">{setRandomIndicator}</option>
+                    </select>
+                </label>
+                <label>
+                    Select Indicator
+                    <select>
+                        <option value="randomIndicator">{setRandomIndicator}</option>
+                    </select>
+                </label>
+                <label>
+                    Select Region
+                    <select>
+                        <option value="top5Regions">{setRegion}</option>
+                    </select>
+                </label>
+                <h1>Top 5 Regions</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/:indicator`} columns={top5Regions} />
+                <h1>Top 5 SubRegions</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5subregion/:indicator`} columns={top5SubRegions} />
+            </div>
         </Container>
     );
 };

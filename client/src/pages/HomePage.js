@@ -57,7 +57,7 @@ export default function HomePage() {
         },
         {
             field: 'SubRegion',
-            headerName: 'Averages (2008-2016)',
+            headerName: 'SubRegion',
             renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
@@ -71,7 +71,7 @@ export default function HomePage() {
         },
         {
             field: 'Country',
-            headerName: 'Averages (2008-2016)',
+            headerName: 'Country',
             renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
@@ -79,7 +79,13 @@ export default function HomePage() {
 
     return (
         <Container>
-            <h1>This is the home page</h1>
+            <button onClick={randomIndicator}>Generate Random Indicator</button>;
+            <h1>Top 5 Regions</h1>
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/:indicator`} columns={top5Regions} />
+            <h1>Top 5 SubRegions</h1>
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5subregion/:indicator`} columns={top5SubRegions} />
+            <h1>Top 5 Countries</h1>
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5countries/:indicator`} columns={top5Countries} />
         </Container>
     );
 };

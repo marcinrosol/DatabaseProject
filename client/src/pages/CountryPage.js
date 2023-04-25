@@ -11,7 +11,7 @@ export default function CountryPage() {
     const [randomIndicator, setRandomIndicator] = useState({});
     // TODO (TASK 13): add a state variable to store the app author (default to '')
     const [averages, setAverages] = useState({});
-    const [regions, setRegion] = useState(null);
+    const [countries, setCountry] = useState(null);
 
     // The useEffect hook by default runs the provided callback after every render
     // The second (optional) argument, [], is the dependency array which signals
@@ -71,15 +71,51 @@ export default function CountryPage() {
         },
         {
             field: 'Country',
-            headerName: 'Averages (2008-2016)',
+            headerName: 'Country',
             renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
+        {
+            field: 'Indicator',
+            headerName: 'Indicator',
+            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+
+        },
+        {
+            field: 'GPI Score',
+            headerName: 'GPI Score',
+            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+
+        }
     ];
 
     return (
         <Container>
             <h1>This is the Country page</h1>
+            <div>
+                <label>
+                    Select Indicator Category
+                    <select>
+                        <option value="randomIndicator">{setRandomIndicator}</option>
+                    </select>
+                </label>
+                <label>
+                    Select Indicator
+                    <select>
+                        <option value="randomIndicator">{setRandomIndicator}</option>
+                    </select>
+                </label>
+                <label>
+                    Select Country
+                    <select>
+                        <option value="top5Regions">{setCountry}</option>
+                    </select>
+                </label>
+                <h1>Country and Average</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/:indicator`} columns={top5Regions} />
+                <h1>Country, Indicator, GPI</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5countries/:indicator`} columns={top5Countries} />
+            </div>
         </Container>
     );
 };
