@@ -23,10 +23,13 @@ connection.connect((err) => err && console.log(err));
 const random = async function (req, res) {
 
   connection.query(`
-                    SELECT indicator_code, indicator_name
-                    FROM Indicators
-                    ORDER BY RAND()
-                    LIMIT 1
+  SELECT indicator_code, indicator_name
+  FROM (SELECT ELT(FLOOR(RAND() * 15) + 1,
+     "SE_XPD_TOTL_GD_ZS","NE_GDI_TOTL_ZS","NE_GDI_TOTL_KD_ZG","NE_GDI_FPRV_ZS",
+      "IT_NET_USER_ZS", "FP_CPI_TOTL_ZG", "TX_VAL_MRCH_XD_WD", "SP_DYN_LE00_FE_IN",
+      "SP_POP_1564_TO_ZS", "SP_RUR_TOTL_ZS", "SP_URB_TOTL_IN_ZS", "NV_AGR_TOTL_ZS",
+      "NY_GDP_MKTP_KD_ZG", "SP_POP_GROW", "EG_ELC_ACCS_ZS") AS random_code) Rand, Indicators i
+  WHERE indicator_code = random_code
                   `, (err, data) => {
     if (err || data.length === 0) {
       // if there is an error for some reason, or if the query is empty (this should not be possible)
