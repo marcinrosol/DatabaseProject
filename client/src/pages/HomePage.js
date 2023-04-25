@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Divider, Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import * as React from 'react';
-import { DataGrid, GridRowsProp, GridColDef} from '@mui/x-data-grid';
+import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import LazyTable from '../components/LazyTable';
 import SongCard from '../components/SongCard';
 const config = require('../config.json');
@@ -33,7 +33,7 @@ export default function HomePage() {
         //fetch(`http://${config.server_host}:${config.server_port}/top5/BM_KLT_DINV_WD_GD_ZS/`)
         //    .then(res => res.json())
         //    .then(resJson => setAverages(resJson));
-    }, []);
+    }, [count]);
 
 
     // TODO (TASK 15): define the columns for the top albums (schema is Album Title, Plays), where Album Title is a link to the album page
