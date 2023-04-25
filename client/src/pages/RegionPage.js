@@ -22,12 +22,16 @@ export default function HomePage() {
         // Fetch request to get the song of the day. Fetch runs asynchronously.
         // The .then() method is called when the fetch request is complete
         // and proceeds to convert the result to a JSON which is finally placed in state.
-        fetch(`http://${config.server_host}:${config.server_port}/random`)
+        fetch(`http://${config.server_host}:${config.server_port}/randomIndCat`)
             .then(res => res.json())
             .then(resJson => setIndicatorCategory(resJson));
 
         // TODO (TASK 14): add a fetch call to get the app author (name not pennkey) and store it in the state variable
-        fetch(`http://${config.server_host}:${config.server_port}/averages/:indicator/:region`)
+        fetch(`http://${config.server_host}:${config.server_port}/regions`)
+            .then(res => res.json())
+            .then(resJson => setAverages(resJson));
+
+        fetch(`http://${config.server_host}:${config.server_port}/compare/:indicator/:region`)
             .then(res => res.json())
             .then(resJson => setAverages(resJson));
     }, []);
@@ -39,12 +43,12 @@ export default function HomePage() {
         {
             field: 'Averages',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/compare/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
             field: 'Region',
             headerName: 'Region',
-            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/compareOnAvg/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];
@@ -53,12 +57,12 @@ export default function HomePage() {
         {
             field: 'Averages',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/compare/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
             field: 'SubRegion',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/compareOnAvg/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];

@@ -27,7 +27,7 @@ export default function HomePage() {
             .then(resJson => setRandomIndicator(resJson));
 
         // TODO (TASK 14): add a fetch call to get the app author (name not pennkey) and store it in the state variable
-        fetch(`http://${config.server_host}:${config.server_port}/averages/:indicator/:region`)
+        fetch(`http://${config.server_host}:${config.server_port}/top5/:indicator`)
             .then(res => res.json())
             .then(resJson => setAverages(resJson));
     }, []);
@@ -39,12 +39,12 @@ export default function HomePage() {
         {
             field: 'Averages',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/top5/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
             field: 'Region',
             headerName: 'Region',
-            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/top5/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];
@@ -53,12 +53,12 @@ export default function HomePage() {
         {
             field: 'Averages',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
             field: 'SubRegion',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];
@@ -67,12 +67,12 @@ export default function HomePage() {
         {
             field: 'Averages',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/averages/:indicator/:region${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
             field: 'Country',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/countries/:indicator/:country${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];
@@ -90,12 +90,12 @@ export default function HomePage() {
             <Divider />
             {/* TODO (TASK 16): add a h2 heading, LazyTable, and divider for top albums. Set the LazyTable's props for defaultPageSize to 5 and rowsPerPageOptions to [5, 10] */}
             <h2>Top 5 Sub Regions</h2>
-            <LazyTable route={`http://${config.server_host}:${config.server_port}/cont_trend/:indicator`} columns={top5SubRegions} defaultPageSize={5} rowsPerPageOptions={[5,10]} />
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5subregion/:indicator`} columns={top5SubRegions} defaultPageSize={5} rowsPerPageOptions={[5,10]} />
             <Divider />
             <Divider />
             {/* TODO (TASK 16): add a h2 heading, LazyTable, and divider for top albums. Set the LazyTable's props for defaultPageSize to 5 and rowsPerPageOptions to [5, 10] */}
             <h2>Top 5 Countries</h2>
-            <LazyTable route={`http://${config.server_host}:${config.server_port}/countries/:indicator/:country`} columns={albumColumns} defaultPageSize={5} rowsPerPageOptions={[5,10]} />
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5countries/:indicator`} columns={albumColumns} defaultPageSize={5} rowsPerPageOptions={[5,10]} />
             <Divider />
             {/* TODO (TASK 17): add a paragraph (<p>text</p>) that displays the value of your author state variable from TASK 13 */}
         </Container>
