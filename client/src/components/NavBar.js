@@ -39,7 +39,7 @@ export default function NavBar() {
                     <NavText href='/' text='DatabaseProject' isMain />
                     <NavText href='/' text='Home' />
                     <NavText href='/Region' text='Region' />
-                    <NavText href='/SubRegion' text='Sub Regionn' />
+                    <NavText href='/SubRegion' text='Sub Region' />
                     <NavText href='/Country' text='Country' />
                 </Toolbar>
             </Container>
