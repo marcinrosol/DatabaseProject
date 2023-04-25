@@ -10,6 +10,7 @@ export default function HomePage() {
     // We use the setState hook to persist information across renders (such as the result of our API calls)
     const [randomIndicator, setRandomIndicator] = useState({});
     // TODO (TASK 13): add a state variable to store the app author (default to '')
+    const [randomIndcatorCode, setRandomIndicatorCode] = useState({})
     const [averages, setAverages] = useState({});
     const [regions, setRegion] = useState(null);
 
@@ -27,9 +28,9 @@ export default function HomePage() {
             .then(resJson => setRandomIndicator(resJson));
 
         // TODO (TASK 14): add a fetch call to get the app author (name not pennkey) and store it in the state variable
-        fetch(`http://${config.server_host}:${config.server_port}/top5/:indicator`)
-            .then(res => res.json())
-            .then(resJson => setAverages(resJson));
+        //fetch(`http://${config.server_host}:${config.server_port}/top5/BM_KLT_DINV_WD_GD_ZS/`)
+        //    .then(res => res.json())
+        //    .then(resJson => setAverages(resJson));
     }, []);
 
 
@@ -37,15 +38,15 @@ export default function HomePage() {
     // Hint: this should be very similar to songColumns defined above, but has 2 columns instead of 3
     const top5Regions = [
         {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            field: 'region',
+            headerName: 'Region',
+            renderCell: (row) => <NavLink>{row.region}</NavLink> // A NavLink component is used to create a link to the album page
+
         },
         {
-            field: 'Region',
-            headerName: 'Region',
-            renderCell: (row) => <NavLink to={`/top5/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-
+            field: 'AVG',
+            headerName: 'Averages (2008-2016)',
+            renderCell: (row) => <NavLink>{row.AVG}</NavLink> // A NavLink component is used to create a link to the album page
         },
     ];
 
@@ -53,12 +54,12 @@ export default function HomePage() {
         {
             field: 'Averages',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/top5subregion/BM_KLT_DINV_WD_GD_ZS/${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
             field: 'SubRegion',
             headerName: 'SubRegion',
-            renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/top5subregion/BM_KLT_DINV_WD_GD_ZS/${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];
@@ -67,12 +68,12 @@ export default function HomePage() {
         {
             field: 'Averages',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/top5countries/BM_KLT_DINV_WD_GD_ZS/${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
             field: 'Country',
             headerName: 'Country',
-            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            renderCell: (row) => <NavLink to={`/top5countries/BM_KLT_DINV_WD_GD_ZS/${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];
@@ -80,12 +81,15 @@ export default function HomePage() {
     return (
         <Container>
             <button onClick={randomIndicator}>Generate Random Indicator</button>;
+            <h2>Randomly generated indicator is:&nbsp;
+                {randomIndicator.indicator_name}
+            </h2>
             <h1>Top 5 Regions</h1>
-            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/:indicator`} columns={top5Regions} />
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/BM_KLT_DINV_WD_GD_ZS/`} columns={top5Regions} />
             <h1>Top 5 SubRegions</h1>
-            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5subregion/:indicator`} columns={top5SubRegions} />
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5subregion/BM_KLT_DINV_WD_GD_ZS/`} columns={top5SubRegions} />
             <h1>Top 5 Countries</h1>
-            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5countries/:indicator`} columns={top5Countries} />
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5countries/BM_KLT_DINV_WD_GD_ZS/`} columns={top5Countries} />
         </Container>
     );
 };

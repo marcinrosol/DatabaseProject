@@ -23,7 +23,7 @@ connection.connect((err) => err && console.log(err));
 const random = async function (req, res) {
 
   connection.query(`
-                    SELECT indicator_name
+                    SELECT indicator_code, indicator_name
                     FROM Indicators
                     ORDER BY RAND()
                     LIMIT 1
@@ -34,7 +34,10 @@ const random = async function (req, res) {
       console.log(err);
       res.json({});
     } else {
-      res.json({ data });
+      res.json({
+        indicator_code: data[0].indicator_code, 
+        indicator_name: data[0].indicator_name
+      });
     }
   });
 }
@@ -46,7 +49,7 @@ const top5 = async function (req, res) {
   const indicator = req.params.indicator;
 
   connection.query(`
-  SELECT r.region,
+  SELECT region,
   (avg(s.2008) + avg(s.2009) + avg(s.2010) + avg(s.2011) + avg(s.2012) +
    avg(s.2013) + avg(s.2014) + avg(s.2015) + avg(s.2016))/9 AS AVG
 FROM Statistics s
