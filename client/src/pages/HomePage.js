@@ -14,6 +14,7 @@ export default function HomePage() {
     const [randomIndcatorCode, setRandomIndicatorCode] = useState({})
     const [averages, setAverages] = useState({});
     const [regions, setRegion] = useState(null);
+    const [count, setCount] = useState(0);
 
     // The useEffect hook by default runs the provided callback after every render
     // The second (optional) argument, [], is the dependency array which signals
@@ -27,7 +28,7 @@ export default function HomePage() {
         fetch(`http://${config.server_host}:${config.server_port}/random`)
             .then(res => res.json())
             .then(resJson => setRandomIndicator(resJson));
-
+        document.title = `You clicked ${count} times`;
         // TODO (TASK 14): add a fetch call to get the app author (name not pennkey) and store it in the state variable
         //fetch(`http://${config.server_host}:${config.server_port}/top5/BM_KLT_DINV_WD_GD_ZS/`)
         //    .then(res => res.json())
@@ -72,7 +73,7 @@ export default function HomePage() {
 
     return (
         <Container>
-            <button onClick={randomIndicator}>Generate Random Indicator</button>;
+            <button onClick={() => setCount(count + 1)}>Generate Random Indicator</button>;
             <h2>Randomly generated indicator is:&nbsp;
                 {randomIndicator.indicator_name}
             </h2>
