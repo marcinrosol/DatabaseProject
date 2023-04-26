@@ -90,7 +90,9 @@ export default function RegionPage() {
                 <label>
                     Select Indicator Category
                     <select>
-                        <option value="randomIndicatorCat">{setRandomIndicator}</option>
+                        <option value="gender">Gender</option>
+                        <option value="jobs">Jobs</option>
+                        <option value="health">Health</option>
                     </select>
                 </label>
                 <label>
