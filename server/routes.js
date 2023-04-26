@@ -429,7 +429,7 @@ ORDER BY s.2016 DESC;
       console.log(err);
       res.json({});
     } else {
-      res.json({ data });
+      res.json(data);
     }
   });
 }

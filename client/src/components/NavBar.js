@@ -36,7 +36,7 @@ export default function NavBar() {
         <AppBar position='static'>
             <Container maxWidth='xl'>
                 <Toolbar disableGutters>
-                    <NavText href='/' text='DatabaseProject' isMain />
+                    <NavText href='/' text='DatabaseProject5000' isMain />
                     <NavText href='/' text='Home' />
                     <NavText href='/Region' text='Region' />
                     <NavText href='/SubRegion' text='Sub Region' />

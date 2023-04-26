@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Container} from '@mui/material';
+import { Container } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import * as React from 'react';
 import LazyTable from '../components/LazyTable';
@@ -29,7 +29,7 @@ export default function CountriesPage() {
     const [countries, setCountries] = useState({
         "data": [
             {
-                "category": "Aruba"
+                "category": "Belgium"
             },
         ]
     });
@@ -39,7 +39,7 @@ export default function CountriesPage() {
     const [valueCat, setValueCat] = React.useState('Jobs');
     const [valueInd, setValueInd] = React.useState('Tax payments (number)');
 
-    const [valueCountries, setValueCountries] = React.useState('Aruba');
+    const [valueCountries, setValueCountries] = React.useState('Belgium');
 
     const handleChangeCat = (event) => {
         setValueCat(event.target.value);
@@ -67,7 +67,7 @@ export default function CountriesPage() {
             .then(res => res.json())
             .then(resJson => setCountries(resJson));
 
-            fetch(`http://${config.server_host}:${config.server_port}/indName2indCode/${urlInd}`)
+        fetch(`http://${config.server_host}:${config.server_port}/indName2indCode/${urlInd}`)
             .then(res => res.json())
             .then(resJson => setValueIndCode(resJson));
 
@@ -87,59 +87,19 @@ export default function CountriesPage() {
 
     // TODO (TASK 15): define the columns for the top albums (schema is Album Title, Plays), where Album Title is a link to the album page
     // Hint: this should be very similar to songColumns defined above, but has 2 columns instead of 3
-    const top5Regions = [
+    const CountriesToAverage = [
         {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-        },
-        {
-            field: 'Region',
-            headerName: 'Region',
-            renderCell: (row) => <NavLink to={`/top5/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-
-        },
-    ];
-
-    const top5SubRegions = [
-        {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-        },
-        {
-            field: 'SubRegion',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-
-        },
-    ];
-
-    const top5Countries = [
-        {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-        },
-        {
-            field: 'Country',
+            field: 'name_long',
             headerName: 'Country',
-            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
         {
-            field: 'Indicator',
-            headerName: 'Indicator',
-            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-
-        },
-        {
-            field: 'GPI Score',
-            headerName: 'GPI Score',
-            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            field: 'average',
+            headerName: 'Averages (2008-2016)',
 
         }
     ];
+
 
     return (
         <Container>
@@ -175,8 +135,8 @@ export default function CountriesPage() {
                 <p></p>
                 <select value={valueCountries} onChange={handleChangeCountries}>
                     {countries.data.map((option) => (
-                        <option key={option.countries} value={option.countries}>
-                            {option.countries}
+                        <option key={option.name_long} value={option.name_long}>
+                            {option.name_long}
                         </option>
                     ))}
                 </select>
@@ -190,11 +150,12 @@ export default function CountriesPage() {
 
 
 
-                <h1>List all countries (in the selected Country’s sub-region) that have average (years 2008-2016) higher values than the selected country’s average for a selected indicator</h1>
-                
+                <h1>Countries with Higher Averages</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/avgHigher/${valueCountries}/${valueIndCode}`} columns={CountriesToAverage} onChange={handleChangeInd} />
 
-                <h1>All indicators from a specified indicator category for all countries where gpi score is less than average (the smaller the score - the more peaceful the country is)</h1>
-                
+
+                <h1>Peaceful Countries</h1>
+
             </div>
         </Container>
     );

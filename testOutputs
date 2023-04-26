@@ -1,3 +1,29 @@
+http: //localhost:8080/avgHigher/Belgium/NV_AGR_TOTL_KD
+{
+    "data": [
+        {
+            "name_long": "France",
+            "average": 42573855288.44444
+        },
+        {
+            "name_long": "Germany",
+            "average": 22445724677
+        },
+        {
+            "name_long": "Netherlands",
+            "average": 14368625153.11111
+        },
+        {
+            "name_long": "Austria",
+            "average": 5300348145.777778
+        },
+        {
+            "name_long": "Switzerland",
+            "average": 4149653876.555556
+        }
+    ]
+}
+
 http: //localhost:8080/compare/Tax%20payments%20(number)/Africa
 {
     "data": [
