@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
-import { Container, Divider, Link } from '@mui/material';
+//import { Container, Divider, Link } from '@mui/material';
+import { Container, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import * as React from 'react';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import LazyTable from '../components/LazyTable';
-import SongCard from '../components/SongCard';
 const config = require('../config.json');
 
 export default function HomePage() {
@@ -35,6 +35,7 @@ export default function HomePage() {
     }, [count]);
 
 
+    
     // TODO (TASK 15): define the columns for the top albums (schema is Album Title, Plays), where Album Title is a link to the album page
     // Hint: this should be very similar to songColumns defined above, but has 2 columns instead of 3
     const top5Regions = [
@@ -69,7 +70,7 @@ export default function HomePage() {
             headerName: 'Averages (2008-2016)'
         }
     ];
-
+/*
     return (
         <Container>
             <button onClick={() => setCount(count + 1)}>Generate Random Indicator</button>
@@ -84,4 +85,41 @@ export default function HomePage() {
             <LazyTable route={`http://${config.server_host}:${config.server_port}/top5countries/${randomIndicator.indicator_code}`} columns={top5Countries} />
         </Container>
     );
-};
+*/
+    return (
+        <Container>
+          
+          <button onClick={() => setCount(count + 1)}>Generate Random Indicator</button>
+            
+              <h4>Randomly generated indicator is:&nbsp;</h4>
+                <h1>{randomIndicator.indicator_name}</h1>
+          
+          
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell key='Regions'>Top 5 Regions</TableCell>
+                  <TableCell key='Subregions'>Top 5 SubRegions</TableCell>
+                  <TableCell key='Countries'>Top 5 Countries</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              <TableRow>
+                  <TableCell key='Regions'>graph</TableCell>
+                  <TableCell key='Subregions'>graph</TableCell>
+                  <TableCell key='Countries'>graph</TableCell>
+                  </TableRow>
+                  <TableRow>
+                  <TableCell key='Regions'>result</TableCell>
+                  <TableCell key='Subregions'>result</TableCell>
+                  <TableCell key='Countries'>result</TableCell>
+                  </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          
+          
+        </Container>
+      );
+    };
