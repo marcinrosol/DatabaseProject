@@ -9,6 +9,7 @@ const config = require('../config.json');
 export default function RegionPage() {
     // We use the setState hook to persist information across renders (such as the result of our API calls)
     const [randomIndicator, setRandomIndicator] = useState({});
+    const [randomIndicatorCat, setRandomIndicatorCat] = useState({});
     // TODO (TASK 13): add a state variable to store the app author (default to '')
     const [averages, setAverages] = useState({});
     const [regions, setRegion] = useState(null);
@@ -30,6 +31,11 @@ export default function RegionPage() {
         fetch(`http://${config.server_host}:${config.server_port}/top5/:indicator`)
             .then(res => res.json())
             .then(resJson => setAverages(resJson));
+
+        fetch(`http://${config.server_host}:${config.server_port}/randomIndCat`)
+            .then(res => res.json())
+            .then(resJson => setRandomIndicatorCat(resJson));
+
     }, []);
 
 
@@ -84,7 +90,7 @@ export default function RegionPage() {
                 <label>
                     Select Indicator Category
                     <select>
-                        <option value="randomIndicator">{setRandomIndicator}</option>
+                        <option value="randomIndicatorCat">{setRandomIndicator}</option>
                     </select>
                 </label>
                 <label>
@@ -100,9 +106,9 @@ export default function RegionPage() {
                     </select>
                 </label>
                 <h1>Top 5 Regions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/:indicator`} columns={top5Regions} />
+
                 <h1>Top 5 SubRegions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5subregion/:indicator`} columns={top5SubRegions} />
+
             </div>
         </Container>
     );

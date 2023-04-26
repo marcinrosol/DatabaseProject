@@ -13,6 +13,21 @@ http: //localhost:8080/randomIndCat
     ]
 }
 
+http: //localhost:8080/randomIndCat
+{
+    "data": [
+        {
+            "category": "Gender"
+        },
+        {
+            "category": "Health"
+        },
+        {
+            "category": "Jobs"
+        }
+    ]
+}
+
 http: //localhost:8080/random
 {
     "data": [
