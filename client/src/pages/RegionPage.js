@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Container, Divider, Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-
+import * as React from 'react';
+import Select from 'react-select';
 
 import LazyTable from '../components/LazyTable';
 import SongCard from '../components/SongCard';
@@ -13,7 +14,7 @@ export default function RegionPage() {
     const [randomIndicatorCat, setRandomIndicatorCat] = useState({
         "data": [
             {
-                "category": "someRandomData"
+                "category": "Jobs"
             },
         ]
     });
@@ -21,7 +22,7 @@ export default function RegionPage() {
     const [randomIndicator, setRandomIndicator] = useState({
         "data": [
             {
-                "category": "someRandomData"
+                "category": "Tax payments (number)"
             },
         ]
     });
@@ -35,6 +36,14 @@ export default function RegionPage() {
         ]
     });
 
+    const [valueCat, setValueCat] = React.useState('Jobs');
+    const [valueInd, setValueInd] = React.useState('Tax payments (number)');
+    const handleChangeCat = (event) => {
+        setValueCat(event.target.value);
+    }
+    const handleChangeInd = (event) => {
+        setValueInd(event.target.value);
+    }
     // The useEffect hook by default runs the provided callback after every render
     // The second (optional) argument, [], is the dependency array which signals
     // to the hook to only run the provided callback if the value of the dependency array
@@ -46,11 +55,10 @@ export default function RegionPage() {
             .then(res => res.json())
             .then(resJson => setRandomIndicatorCat(resJson));
 
-
-        fetch(`http://${config.server_host}:${config.server_port}/indicatorsOnCat/Health`)
+        fetch(`http://${config.server_host}:${config.server_port}/indicatorsOnCat/${valueCat}`)
             .then(res => res.json())
             .then(resJson => setRandomIndicator(resJson));
-    }, []);
+    }, [valueCat, valueInd]);
 
 
 
@@ -111,34 +119,39 @@ export default function RegionPage() {
             <h1>This is the Region page</h1>
             <div>
                 <label>
-                    Select Indicator Category
+                    Select Indicator Category:
                 </label>
-                <select >
+                <p></p>
+                <select value={valueCat} onChange={handleChangeCat}>
                     {randomIndicatorCat.data.map((option) => (
                         <option key={option.category} value={option.category}>
                             {option.category}
                         </option>
                     ))}
                 </select>
-
+                <p></p>
                 <label>
-                    Select Indicator
+                    Select Indicator:
                 </label>
-                <select>
+                <p></p>
+                <select value={valueInd} onChange={handleChangeInd}>
                     {randomIndicator.data.map((option) => (
                         <option key={option.indicator_name} value={option.indicator_name}>
                             {option.indicator_name}
                         </option>
                     ))}
                 </select>
-
+                <p></p>
                 <label>
-                    Select Region
+                    Select Region:
+                </label>
+                <p></p>
                     <select>
                         <option value="top5Regions">{setRegion}</option>
                     </select>
-                </label>
-                <p>Selected category:</p>
+                
+                <p>Selected category: {valueCat}</p>
+                <p>Selected indicator: {valueInd}</p>
                 <h1>Top 5 Regions</h1>
 
                 <h1>Top 5 SubRegions</h1>
