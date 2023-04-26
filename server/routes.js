@@ -309,8 +309,9 @@ ORDER BY sub_region;
 
 // Query 13: For a selected indicator and sub-region, how the countries are comparing on average 2008-2016
 const compareOnAvgSub = async function (req, res) {
-  const indicator = req.params.indicator;
   const subregion = req.params.subregion;
+  const indicator = req.params.indicator;
+
 
   connection.query(`
   SELECT c.name_long,

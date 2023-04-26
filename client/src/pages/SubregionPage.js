@@ -1,108 +1,188 @@
 import { useEffect, useState } from 'react';
 import { Container, Divider, Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import * as React from 'react';
+//import { Select } from 'react-select';
 
 import LazyTable from '../components/LazyTable';
 import SongCard from '../components/SongCard';
 const config = require('../config.json');
 
-export default function SubregionPage() {
-    // We use the setState hook to persist information across renders (such as the result of our API calls)
-    const [randomIndicator, setRandomIndicator] = useState({});
-    // TODO (TASK 13): add a state variable to store the app author (default to '')
-    const [averages, setAverages] = useState({});
-    const [regions, setRegion] = useState(null);
+//let urlInd = encodeURIComponent()
 
+export default function RegionPage() {
+    // We use the setState hook to persist information across renders (such as the result of our API calls)
+
+    const [randomIndicatorCat, setRandomIndicatorCat] = useState({
+        "data": [
+            {
+                "category": "Jobs"
+            },
+        ]
+    });
+
+    const [randomIndicator, setRandomIndicator] = useState({
+        "data": [
+            {
+                "category": "Tax payments (number)"
+            },
+        ]
+    });
+
+    const [subRegions, setSubRegion] = useState({
+        "data": [
+            {
+                "category": "Australia and New Zealand"
+            },
+        ]
+    });
+
+    const [valueIndCode, setValueIndCode] = React.useState('IC_TAX_PAYM');
+
+    const [valueCat, setValueCat] = React.useState('Jobs');
+    const [valueInd, setValueInd] = React.useState('Tax payments (number)');
+
+    const [valueSubRegion, setValueSubRegion] = React.useState('Australia and New Zealand');
+
+    const handleChangeCat = (event) => {
+        setValueCat(event.target.value);
+    }
+    const handleChangeInd = (event) => {
+        setValueInd(event.target.value);
+
+    }
+    const handleChangeSubRegion = (event) => {
+        setValueSubRegion(event.target.value);
+    }
     // The useEffect hook by default runs the provided callback after every render
     // The second (optional) argument, [], is the dependency array which signals
     // to the hook to only run the provided callback if the value of the dependency array
     // changes from the previous render. In this case, an empty array means the callback
     // will only run on the very first render.
     useEffect(() => {
-        // Fetch request to get the song of the day. Fetch runs asynchronously.
-        // The .then() method is called when the fetch request is complete
-        // and proceeds to convert the result to a JSON which is finally placed in state.
-        fetch(`http://${config.server_host}:${config.server_port}/random`)
+
+        fetch(`http://${config.server_host}:${config.server_port}/randomIndCat`)
+            .then(res => res.json())
+            .then(resJson => setRandomIndicatorCat(resJson));
+
+        fetch(`http://${config.server_host}:${config.server_port}/indicatorsOnCat/${valueCat}`)
             .then(res => res.json())
             .then(resJson => setRandomIndicator(resJson));
 
-        // TODO (TASK 14): add a fetch call to get the app author (name not pennkey) and store it in the state variable
-        fetch(`http://${config.server_host}:${config.server_port}/top5/:indicator`)
+        fetch(`http://${config.server_host}:${config.server_port}/subregions`)
             .then(res => res.json())
-            .then(resJson => setAverages(resJson));
-    }, []);
+            .then(resJson => setSubRegion(resJson));
+
+        fetch(`http://${config.server_host}:${config.server_port}/indName2indCode/${urlInd}`)
+            .then(res => res.json())
+            .then(resJson => setValueIndCode(resJson));
+
+
+
+    }, [valueCat, valueInd, valueSubRegion, valueIndCode]);
+
+
+    let urlInd = encodeURIComponent(valueInd)
+
+    console.log(valueCat)
+    console.log(valueInd)
+    console.log(valueSubRegion)
+    console.log(valueIndCode)
+    console.log(urlInd)
+
+
+    //console.log(randomIndicatorCat.data[1])
+    //console.log(randomIndicatorCat.data[2])
 
 
     // TODO (TASK 15): define the columns for the top albums (schema is Album Title, Plays), where Album Title is a link to the album page
     // Hint: this should be very similar to songColumns defined above, but has 2 columns instead of 3
-    const top5Regions = [
+    const CountriesToAverage = [
         {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-        },
-        {
-            field: 'Region',
+            field: 'name_long',
             headerName: 'Region',
-            renderCell: (row) => <NavLink to={`/top5/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+        },
+        {
+            field: 'Avg',
+            headerName: 'Averages (2008-2016)',
 
         },
     ];
 
-    const top5SubRegions = [
+    const SubRegionCompare = [
         {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+            field: 'sub_region',
+            headerName: 'Sub Region',
         },
         {
-            field: 'SubRegion',
+            field: 'Avg',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];
 
-    const top5Countries = [
-        {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-        },
-        {
-            field: 'Country',
-            headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
-
-        },
-    ];
 
     return (
         <Container>
-            <h1>This is the Region page</h1>
+            <h1>This is the Sub Region page</h1>
             <div>
                 <label>
-                    Select Indicator Category
-                    <select>
-                        <option value="randomIndicator">{setRandomIndicator}</option>
-                    </select>
+                    Select Indicator Category:
                 </label>
+                <p></p>
+                <select value={valueCat} onChange={handleChangeCat}>
+                    {randomIndicatorCat.data.map((option) => (
+                        <option key={option.category} value={option.category}>
+                            {option.category}
+                        </option>
+                    ))}
+                </select>
+                <p></p>
                 <label>
-                    Select Indicator
-                    <select>
-                        <option value="randomIndicator">{setRandomIndicator}</option>
-                    </select>
+                    Select Indicator:
                 </label>
+                <p></p>
+                <select value={valueInd} onChange={handleChangeInd}>
+                    {randomIndicator.data.map((option) => (
+                        <option key={option.indicator_name} value={option.indicator_name}>
+                            {option.indicator_name}
+                        </option>
+                    ))}
+                </select>
+                <p></p>
                 <label>
-                    Select Region
-                    <select>
-                        <option value="top5Regions">{setRegion}</option>
-                    </select>
+                    Select SubRegion:
                 </label>
-                <h1>Country and Average</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5countries/:indicator`} columns={top5Countries} />
-                <h1>Subregion and Average</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5subregion/:indicator`} columns={top5SubRegions} />
+                <p></p>
+                <select value={valueSubRegion} onChange={handleChangeSubRegion}>
+                    {subRegions.data.map((option) => (
+                        <option key={option.sub_region} value={option.sub_region}>
+                            {option.sub_region}
+                        </option>
+                    ))}
+                </select>
+
+                <p>Selected category: {valueCat}</p>
+                <p>Selected indicator: {valueInd}</p>
+                <p>Selected indicator Code: {valueIndCode}</p>
+                <p>Selected SubRegion: {valueSubRegion}</p>
+                <p>Encoded indicator: {urlInd}</p>
+
+
+
+
+
+                <h1>Top 5 SubRegions</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvgSub/${valueSubRegion}/${urlInd}/`} columns={CountriesToAverage} onChange={handleChangeInd} />
+
+                <h1>Top 5 Regions</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareSubs/${urlInd}`} columns={SubRegionCompare} onChange={handleChangeInd} />
+
+
+
+
+
+
             </div>
         </Container>
     );
