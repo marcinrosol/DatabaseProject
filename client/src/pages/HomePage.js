@@ -9,7 +9,9 @@ const config = require('../config.json');
 
 export default function HomePage() {
     // We use the setState hook to persist information across renders (such as the result of our API calls)
-    const [randomIndicator, setRandomIndicator] = useState({});
+    const [randomIndicator, setRandomIndicator] = useState({
+        "indicator_code":"SP_POP_GROW","indicator_name":"Population growth (annual %)"
+    });
     // TODO (TASK 13): add a state variable to store the app author (default to '')
     const [randomIndcatorCode, setRandomIndicatorCode] = useState({})
     const [averages, setAverages] = useState({});
@@ -78,11 +80,11 @@ export default function HomePage() {
                 {randomIndicator.indicator_name} {randomIndicator.indicator_code}
             </h2>
             <h1>Top 5 Regions</h1>
-            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/BM_KLT_DINV_WD_GD_ZS/`} columns={top5Regions} />
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/${randomIndicator.indicator_code}`} columns={top5Regions} />
             <h1>Top 5 SubRegions</h1>
-            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5subregion/BM_KLT_DINV_WD_GD_ZS/`} columns={top5SubRegions} />
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5subregion/${randomIndicator.indicator_code}`} columns={top5SubRegions} />
             <h1>Top 5 Countries</h1>
-            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5countries/BM_KLT_DINV_WD_GD_ZS/`} columns={top5Countries} />
+            <LazyTable route={`http://${config.server_host}:${config.server_port}/top5countries/${randomIndicator.indicator_code}`} columns={top5Countries} />
         </Container>
     );
 };
