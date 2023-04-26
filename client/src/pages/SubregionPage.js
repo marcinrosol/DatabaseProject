@@ -121,6 +121,12 @@ export default function RegionPage() {
         },
     ];
 
+    //<p>Selected category: {valueCat}</p>
+    //            <p>Selected indicator: {valueInd}</p>
+    //            <p>Selected indicator Code: {valueIndCode}</p>
+    //            <p>Selected SubRegion: {valueSubRegion}</p>
+    //            <p>Encoded indicator: {urlInd}</p>
+
 
     return (
         <Container>
@@ -162,11 +168,7 @@ export default function RegionPage() {
                     ))}
                 </select>
 
-                <p>Selected category: {valueCat}</p>
-                <p>Selected indicator: {valueInd}</p>
-                <p>Selected indicator Code: {valueIndCode}</p>
-                <p>Selected SubRegion: {valueSubRegion}</p>
-                <p>Encoded indicator: {urlInd}</p>
+
 
 
 
