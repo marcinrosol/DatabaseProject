@@ -72,7 +72,9 @@ export default function RegionPage() {
 
 
 
-    console.log(randomIndicatorCat)
+    console.log(valueCat)
+    console.log(valueInd)
+    console.log(valueRegion)
 
 
     //console.log(randomIndicatorCat.data[1])
@@ -85,12 +87,10 @@ export default function RegionPage() {
         {
             field: 'Averages',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
         },
         {
             field: 'Region',
             headerName: 'Region',
-            renderCell: (row) => <NavLink to={`/top5/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];
@@ -99,12 +99,11 @@ export default function RegionPage() {
         {
             field: 'Averages',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+
         },
         {
             field: 'SubRegion',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5subregion/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
 
         },
     ];
@@ -113,12 +112,12 @@ export default function RegionPage() {
         {
             field: 'Averages',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+
         },
         {
             field: 'Country',
             headerName: 'Averages (2008-2016)',
-            renderCell: (row) => <NavLink to={`/top5countries/:indicator${row.averages}`}>{row.average}</NavLink> // A NavLink component is used to create a link to the album page
+
 
         },
     ];
@@ -166,9 +165,19 @@ export default function RegionPage() {
                 <p>Selected category: {valueCat}</p>
                 <p>Selected indicator: {valueInd}</p>
                 <p>Selected Region: {valueRegion}</p>
-                <h1>Top 5 Regions</h1>
+
+
+
 
                 <h1>Top 5 SubRegions</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} />
+
+                <h1>Top 5 Regions</h1>
+
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/compareOnAvg/${valueInd}`} columns={top5Regions} />
+
+
+
 
             </div>
         </Container>

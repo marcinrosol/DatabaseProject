@@ -38,7 +38,7 @@ const random = async function (req, res) {
       res.json({});
     } else {
       res.json({
-        indicator_code: data[0].indicator_code, 
+        indicator_code: data[0].indicator_code,
         indicator_name: data[0].indicator_name
       });
     }
