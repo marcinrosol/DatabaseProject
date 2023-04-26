@@ -156,7 +156,7 @@ export default function RegionPage() {
 
 
                 <h1>Top 5 SubRegions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} onChange={handleChangeRegion} />
 
                 <h1>Top 5 Regions</h1>
 
