@@ -89,7 +89,7 @@ export default function RegionPage() {
             headerName: 'Region',
         },
         {
-            field: 'AVG',
+            field: 'Avg',
             headerName: 'Averages (2008-2016)',
 
         },
@@ -159,6 +159,7 @@ export default function RegionPage() {
                 <LazyTable route={`http://${config.server_host}:${config.server_port}/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} onChange={handleChangeRegion} />
 
                 <h1>Top 5 Regions</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvg/SP_URB_TOTL`} columns={top5Regions} />
 
 
 
