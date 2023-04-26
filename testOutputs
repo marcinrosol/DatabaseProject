@@ -1,3 +1,82 @@
+http: //localhost:8080/compare/Tax%20payments%20(number)/Africa
+{
+    "data": [
+        {
+            "sub_region": "Sub-Saharan Africa",
+            "Avg": 38.2444444439
+        },
+        {
+            "sub_region": "Northern Africa",
+            "Avg": 24.9777777778
+        }
+    ]
+}
+
+http: //localhost:8080/compareOnAvg/SP_URB_TOTL
+{
+    "data": [
+        {
+            "region": "Asia",
+            "Avg": 39244559.70888889
+        },
+        {
+            "region": "Americas",
+            "Avg": 16870508.97777778
+        },
+        {
+            "region": "Europe",
+            "Avg": 11752985.86231884
+        },
+        {
+            "region": "Africa",
+            "Avg": 8221360.434156378
+        },
+        {
+            "region": "Oceania",
+            "Avg": 1356714.30994152
+        }
+    ]
+}
+
+http: //localhost:8080/top5/TX_VAL_MRCH_XD_WD
+[
+    {
+        "region": "Africa",
+        "AVG": 547.1369444441
+    },
+    {
+        "region": "Asia",
+        "AVG": 408.206349206
+    },
+    {
+        "region": "Europe",
+        "AVG": 344.9897018966
+    },
+    {
+        "region": "Americas",
+        "AVG": 276.580352303
+    },
+    {
+        "region": "Oceania",
+        "AVG": 208.9205555551
+    }
+]
+
+http: //localhost:8080/compare/Urban%20Population/Americas
+{
+    "data": [
+        {
+            "sub_region": "Northern America",
+            "Avg": 70708222.6388889
+        },
+        {
+            "sub_region": "Latin America and the Caribbean",
+            "Avg": 11618049.108401084
+        }
+    ]
+}
+
+
 http: //localhost:8080/regions
 {
     "data": [
