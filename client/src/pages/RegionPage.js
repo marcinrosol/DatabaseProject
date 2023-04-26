@@ -170,11 +170,11 @@ export default function RegionPage() {
 
 
                 <h1>Top 5 SubRegions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} />
 
                 <h1>Top 5 Regions</h1>
 
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/compareOnAvg/${valueInd}`} columns={top5Regions} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvg/${valueInd}`} columns={top5Regions} />
 
 
 
