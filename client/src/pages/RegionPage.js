@@ -85,42 +85,28 @@ export default function RegionPage() {
     // Hint: this should be very similar to songColumns defined above, but has 2 columns instead of 3
     const top5Regions = [
         {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
+            field: 'region',
+            headerName: 'Region',
         },
         {
-            field: 'Region',
-            headerName: 'Region',
+            field: 'AVG',
+            headerName: 'Averages (2008-2016)',
 
         },
     ];
 
     const top5SubRegions = [
         {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-
+            field: 'sub_region',
+            headerName: 'Sub Region',
         },
         {
-            field: 'SubRegion',
+            field: 'Avg',
             headerName: 'Averages (2008-2016)',
 
         },
     ];
 
-    const top5Countries = [
-        {
-            field: 'Averages',
-            headerName: 'Averages (2008-2016)',
-
-        },
-        {
-            field: 'Country',
-            headerName: 'Averages (2008-2016)',
-
-
-        },
-    ];
 
     return (
         <Container>
@@ -170,11 +156,11 @@ export default function RegionPage() {
 
 
                 <h1>Top 5 SubRegions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} />
 
                 <h1>Top 5 Regions</h1>
 
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/compareOnAvg/${valueInd}`} columns={top5Regions} />
+
 
 
 
