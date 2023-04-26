@@ -48,7 +48,6 @@ export default function RegionPage() {
     }
     const handleChangeInd = (event) => {
         setValueInd(event.target.value);
-        
     }
     const handleChangeRegion = (event) => {
         setValueRegion(event.target.value);
