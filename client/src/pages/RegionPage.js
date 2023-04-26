@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Container, Divider, Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import * as React from 'react';
 
 import LazyTable from '../components/LazyTable';
 import SongCard from '../components/SongCard';
@@ -13,7 +14,10 @@ export default function RegionPage() {
     // TODO (TASK 13): add a state variable to store the app author (default to '')
     const [averages, setAverages] = useState({});
     const [regions, setRegion] = useState(null);
-
+    const [value, setValue] = React.useState('jobs');
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    }
     // The useEffect hook by default runs the provided callback after every render
     // The second (optional) argument, [], is the dependency array which signals
     // to the hook to only run the provided callback if the value of the dependency array
@@ -89,7 +93,7 @@ export default function RegionPage() {
             <div>
                 <label>
                     Select Indicator Category
-                    <select>
+                    <select value={value} onChange={handleChange}>
                         <option value="gender">Gender</option>
                         <option value="jobs">Jobs</option>
                         <option value="health">Health</option>
@@ -107,6 +111,7 @@ export default function RegionPage() {
                         <option value="top5Regions">{setRegion}</option>
                     </select>
                 </label>
+                <p>Selected category: {value}</p>
                 <h1>Top 5 Regions</h1>
 
                 <h1>Top 5 SubRegions</h1>
