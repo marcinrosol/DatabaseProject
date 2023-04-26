@@ -8,6 +8,8 @@ import LazyTable from '../components/LazyTable';
 import SongCard from '../components/SongCard';
 const config = require('../config.json');
 
+//let urlInd = encodeURIComponent()
+
 export default function RegionPage() {
     // We use the setState hook to persist information across renders (such as the result of our API calls)
 
@@ -48,6 +50,7 @@ export default function RegionPage() {
     }
     const handleChangeInd = (event) => {
         setValueInd(event.target.value);
+        
     }
     const handleChangeRegion = (event) => {
         setValueRegion(event.target.value);
@@ -71,7 +74,7 @@ export default function RegionPage() {
             .then(res => res.json())
             .then(resJson => setRegion(resJson));
 
-        fetch(`http://${config.server_host}:${config.server_port}/indName2indCode/${valueInd}`)
+        fetch(`http://${config.server_host}:${config.server_port}/indName2indCode/${urlInd}`)
             .then(res => res.json())
             .then(resJson => setValueIndCode(resJson));
 
@@ -80,12 +83,13 @@ export default function RegionPage() {
     }, [valueCat, valueInd, valueRegion, valueIndCode]);
 
 
-
+    let urlInd = encodeURIComponent(valueInd)
 
     console.log(valueCat)
     console.log(valueInd)
     console.log(valueRegion)
     console.log(valueIndCode)
+    console.log(urlInd)
 
 
     //console.log(randomIndicatorCat.data[1])
@@ -163,12 +167,13 @@ export default function RegionPage() {
                 <p>Selected indicator: {valueInd}</p>
                 <p>Selected indicator Code: {valueIndCode}</p>
                 <p>Selected Region: {valueRegion}</p>
+                <p>Encoded indicator: {urlInd}</p>
 
 
 
 
                 <h1>Top 5 SubRegions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} onChange={handleChangeInd} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compare/${urlInd}/${valueRegion}`} columns={top5SubRegions} onChange={handleChangeInd} />
 
                 <h1>Top 5 Regions</h1>
                 <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvg/${valueIndCode}`} columns={top5Regions} onChange={handleChangeInd} />
