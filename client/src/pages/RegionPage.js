@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Divider, Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import * as React from 'react';
-import Select from 'react-select';
+//import { Select } from 'react-select';
 
 import LazyTable from '../components/LazyTable';
 import SongCard from '../components/SongCard';
@@ -31,18 +31,23 @@ export default function RegionPage() {
     const [regions, setRegion] = useState({
         "data": [
             {
-                "category": "someRandomData"
+                "category": "Africa"
             },
         ]
     });
 
     const [valueCat, setValueCat] = React.useState('Jobs');
     const [valueInd, setValueInd] = React.useState('Tax payments (number)');
+    const [valueRegion, setValueRegion] = React.useState('Africa');
+
     const handleChangeCat = (event) => {
         setValueCat(event.target.value);
     }
     const handleChangeInd = (event) => {
         setValueInd(event.target.value);
+    }
+    const handleChangeRegion = (event) => {
+        setValueRegion(event.target.value);
     }
     // The useEffect hook by default runs the provided callback after every render
     // The second (optional) argument, [], is the dependency array which signals
@@ -58,7 +63,11 @@ export default function RegionPage() {
         fetch(`http://${config.server_host}:${config.server_port}/indicatorsOnCat/${valueCat}`)
             .then(res => res.json())
             .then(resJson => setRandomIndicator(resJson));
-    }, [valueCat, valueInd]);
+
+        fetch(`http://${config.server_host}:${config.server_port}/regions`)
+            .then(res => res.json())
+            .then(resJson => setRegion(resJson));
+    }, [valueCat, valueInd, valueRegion]);
 
 
 
@@ -146,12 +155,17 @@ export default function RegionPage() {
                     Select Region:
                 </label>
                 <p></p>
-                    <select>
-                        <option value="top5Regions">{setRegion}</option>
-                    </select>
-                
+                <select value={valueRegion} onChange={handleChangeRegion}>
+                    {regions.data.map((option) => (
+                        <option key={option.region} value={option.region}>
+                            {option.region}
+                        </option>
+                    ))}
+                </select>
+
                 <p>Selected category: {valueCat}</p>
                 <p>Selected indicator: {valueInd}</p>
+                <p>Selected Region: {valueRegion}</p>
                 <h1>Top 5 Regions</h1>
 
                 <h1>Top 5 SubRegions</h1>

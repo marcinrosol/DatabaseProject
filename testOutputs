@@ -1,3 +1,24 @@
+http: //localhost:8080/regions
+{
+    "data": [
+        {
+            "region": "Africa"
+        },
+        {
+            "region": "Americas"
+        },
+        {
+            "region": "Asia"
+        },
+        {
+            "region": "Europe"
+        },
+        {
+            "region": "Oceania"
+        }
+    ]
+}
+
 http: //localhost:8080/indicatorsOnCat/Health
 {
     "data": [
