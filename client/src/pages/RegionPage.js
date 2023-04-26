@@ -138,6 +138,7 @@ export default function RegionPage() {
                         <option value="top5Regions">{setRegion}</option>
                     </select>
                 </label>
+                <p>Selected category: {value}</p>
                 <h1>Top 5 Regions</h1>
 
                 <h1>Top 5 SubRegions</h1>

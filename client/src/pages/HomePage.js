@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Container, Divider, Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import * as React from 'react';
@@ -10,7 +10,7 @@ const config = require('../config.json');
 export default function HomePage() {
     // We use the setState hook to persist information across renders (such as the result of our API calls)
     const [randomIndicator, setRandomIndicator] = useState({
-        "indicator_code":"SP_POP_GROW","indicator_name":"Population growth (annual %)"
+        "indicator_code":"","indicator_name":""
     });
     // TODO (TASK 13): add a state variable to store the app author (default to '')
     const [count, setCount] = useState(0);
