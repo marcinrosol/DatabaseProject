@@ -13,9 +13,6 @@ export default function HomePage() {
         "indicator_code":"SP_POP_GROW","indicator_name":"Population growth (annual %)"
     });
     // TODO (TASK 13): add a state variable to store the app author (default to '')
-    const [randomIndcatorCode, setRandomIndicatorCode] = useState({})
-    const [averages, setAverages] = useState({});
-    const [regions, setRegion] = useState(null);
     const [count, setCount] = useState(0);
 
     // The useEffect hook by default runs the provided callback after every render
