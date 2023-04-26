@@ -100,7 +100,7 @@ export default function RegionPage() {
     const CountriesToAverage = [
         {
             field: 'name_long',
-            headerName: 'Region',
+            headerName: 'Country',
         },
         {
             field: 'Avg',
@@ -172,7 +172,7 @@ export default function RegionPage() {
 
 
 
-                <h1>Top 5 SubRegions</h1>
+                <h1>Top Countries per Sub Region</h1>
                 <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvgSub/${valueSubRegion}/Maternal%20mortality%20ratio%20(modeled%20estimate,%20per%20100,000%20live%20births)/`} columns={CountriesToAverage} onChange={handleChangeInd} />
 
                 <h1>Top Regions</h1>
