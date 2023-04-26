@@ -42,6 +42,9 @@ app.get('/compare/:indicator/:region', routes.compare);
 //Query 9: For a selected indicator, how the continents/regions are comparing on average 2008- 2016.
 app.get('/compareOnAvg/:indicator', routes.compareOnAvg);
 
+//Query 9b: For a selected indicator name, return indicator code. 
+app.get('/indName2indCode/:indicatorName', routes.indName2indCode);
+
 /************************
  * Sub-Regions  Page *
  ************************/

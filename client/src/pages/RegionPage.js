@@ -36,8 +36,11 @@ export default function RegionPage() {
         ]
     });
 
+    const [valueIndCode, setValueIndCode] = React.useState('IC_TAX_PAYM');
+
     const [valueCat, setValueCat] = React.useState('Jobs');
     const [valueInd, setValueInd] = React.useState('Tax payments (number)');
+
     const [valueRegion, setValueRegion] = React.useState('Africa');
 
     const handleChangeCat = (event) => {
@@ -45,6 +48,7 @@ export default function RegionPage() {
     }
     const handleChangeInd = (event) => {
         setValueInd(event.target.value);
+        setValueIndCode(event.target.value);
     }
     const handleChangeRegion = (event) => {
         setValueRegion(event.target.value);
@@ -67,7 +71,14 @@ export default function RegionPage() {
         fetch(`http://${config.server_host}:${config.server_port}/regions`)
             .then(res => res.json())
             .then(resJson => setRegion(resJson));
-    }, [valueCat, valueInd, valueRegion]);
+
+        fetch(`http://${config.server_host}:${config.server_port}/indName2indCode/${valueInd}`)
+            .then(res => res.json())
+            .then(resJson => setValueIndCode(resJson));
+
+
+
+    }, [valueCat, valueInd, valueRegion, valueIndCode]);
 
 
 
@@ -75,6 +86,7 @@ export default function RegionPage() {
     console.log(valueCat)
     console.log(valueInd)
     console.log(valueRegion)
+    console.log(valueIndCode)
 
 
     //console.log(randomIndicatorCat.data[1])
@@ -128,7 +140,7 @@ export default function RegionPage() {
                     Select Indicator:
                 </label>
                 <p></p>
-                <select value={valueInd} onChange={handleChangeInd}>
+                <select value={valueInd} onChange={handleChangeCat}>
                     {randomIndicator.data.map((option) => (
                         <option key={option.indicator_name} value={option.indicator_name}>
                             {option.indicator_name}
@@ -150,16 +162,17 @@ export default function RegionPage() {
 
                 <p>Selected category: {valueCat}</p>
                 <p>Selected indicator: {valueInd}</p>
+                <p>Selected indicator Code: {valueIndCode}</p>
                 <p>Selected Region: {valueRegion}</p>
 
 
 
 
                 <h1>Top 5 SubRegions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} onChange={handleChangeRegion} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compare/${valueInd}/${valueRegion}`} columns={top5SubRegions} onChange={handleChangeInd} />
 
                 <h1>Top 5 Regions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvg/SP_URB_TOTL`} columns={top5Regions} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvg/${valueIndCode}`} columns={top5Regions} onChange={handleChangeInd} />
 
 
 

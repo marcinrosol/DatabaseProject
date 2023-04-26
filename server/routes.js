@@ -256,6 +256,30 @@ ORDER BY AVG DESC;
   });
 }
 
+// GET /indName2indCode
+// Query 9b: For a selected indicator name, return indicator code. 
+const indName2indCode = async function (req, res) {
+  const indicatorName = req.params.indicatorName;
+
+  connection.query(`
+  Select i.indicator_code
+FROM Indicators i
+WHERE i.indicator_name = "${indicatorName}";
+
+;
+
+                  `, (err, data) => {
+    if (err || data.length === 0) {
+      // if there is an error for some reason, or if the query is empty (this should not be possible)
+      // print the error message and return an empty object instead
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data[0].indicator_code);
+    }
+  });
+}
+
 /************************
  * Sub-Regions  Page *
  ************************/
@@ -745,6 +769,7 @@ module.exports = {
   compare,
   compareOnAvg,
   subregions,
+  indName2indCode,
   compareOnAvgSub,
   compareSubs,
   countries,
