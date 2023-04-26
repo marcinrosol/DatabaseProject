@@ -28,8 +28,7 @@ export default function RegionPage() {
             },
         ]
     });
-    // TODO (TASK 13): add a state variable to store the app author (default to '')
-    const [averages, setAverages] = useState({});
+
     const [regions, setRegion] = useState({
         "data": [
             {

@@ -333,7 +333,7 @@ ORDER BY AVG DESC;
       console.log(err);
       res.json({});
     } else {
-      res.json({ data });
+      res.json(data);
     }
   });
 }
@@ -365,7 +365,7 @@ ORDER BY Avg DESC;
       console.log(err);
       res.json({});
     } else {
-      res.json({ data });
+      res.json(data);
     }
   });
 }

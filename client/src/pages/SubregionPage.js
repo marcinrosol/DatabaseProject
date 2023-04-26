@@ -16,7 +16,7 @@ export default function RegionPage() {
     const [randomIndicatorCat, setRandomIndicatorCat] = useState({
         "data": [
             {
-                "category": "Jobs"
+                "category": "Health"
             },
         ]
     });
@@ -24,7 +24,7 @@ export default function RegionPage() {
     const [randomIndicator, setRandomIndicator] = useState({
         "data": [
             {
-                "category": "Tax payments (number)"
+                "category": "Maternal mortality ratio (modeled estimate, per 100,000 live births)"
             },
         ]
     });
@@ -39,8 +39,8 @@ export default function RegionPage() {
 
     const [valueIndCode, setValueIndCode] = React.useState('IC_TAX_PAYM');
 
-    const [valueCat, setValueCat] = React.useState('Jobs');
-    const [valueInd, setValueInd] = React.useState('Tax payments (number)');
+    const [valueCat, setValueCat] = React.useState('Health');
+    const [valueInd, setValueInd] = React.useState('Maternal mortality ratio (modeled estimate, per 100,000 live births)');
 
     const [valueSubRegion, setValueSubRegion] = React.useState('Australia and New Zealand');
 
@@ -173,10 +173,10 @@ export default function RegionPage() {
 
 
                 <h1>Top 5 SubRegions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvgSub/${valueSubRegion}/${urlInd}/`} columns={CountriesToAverage} onChange={handleChangeInd} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvgSub/${valueSubRegion}/${urlInd}/`} columns={SubRegionCompare} onChange={handleChangeInd} />
 
                 <h1>Top 5 Regions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareSubs/${urlInd}`} columns={SubRegionCompare} onChange={handleChangeInd} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareSubs/${valueIndCode}`} columns={CountriesToAverage} onChange={handleChangeInd} />
 
 
 

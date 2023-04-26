@@ -53,9 +53,9 @@ app.get('/indName2indCode/:indicatorName', routes.indName2indCode);
 //Query 12: Generate a list of Sub-Regions
 app.get('/subregions', routes.subregions);
 // Query 13: For a selected indicator and sub-region, how the countries are comparing on average 2008-2016
-app.get('compareOnAvgSub/:subregion/:indicator/', routes.compareOnAvgSub);
+app.get('/compareOnAvgSub/:subregion/:indicator/', routes.compareOnAvgSub);
 // Query 14: For a selected indicator, how the sub-regions are comparing on average 2008- 2016.
-app.get('compareSubs/:indicator/', routes.compareSubs);
+app.get('/compareSubs/:indicator/', routes.compareSubs);
 
 /************************
  * Countries  Page *
