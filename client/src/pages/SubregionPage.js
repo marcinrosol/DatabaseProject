@@ -173,10 +173,10 @@ export default function RegionPage() {
 
 
                 <h1>Top 5 SubRegions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvgSub/${valueSubRegion}/${urlInd}/`} columns={SubRegionCompare} onChange={handleChangeInd} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvgSub/Central%20Asia/Maternal%20mortality%20ratio%20(modeled%20estimate,%20per%20100,000%20live%20births)/`} columns={CountriesToAverage} onChange={handleChangeInd} />
 
-                <h1>Top 5 Regions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareSubs/${valueIndCode}`} columns={CountriesToAverage} onChange={handleChangeInd} />
+                <h1>Top Regions</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareSubs/Maternal%20mortality%20ratio%20(modeled%20estimate,%20per%20100,000%20live%20births)`} columns={SubRegionCompare} onChange={handleChangeInd} />
 
 
 
