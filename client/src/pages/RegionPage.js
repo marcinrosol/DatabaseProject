@@ -2,17 +2,38 @@ import { useEffect, useState } from 'react';
 import { Container, Divider, Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
+
 import LazyTable from '../components/LazyTable';
 import SongCard from '../components/SongCard';
 const config = require('../config.json');
 
 export default function RegionPage() {
     // We use the setState hook to persist information across renders (such as the result of our API calls)
-    const [randomIndicator, setRandomIndicator] = useState({});
-    const [randomIndicatorCat, setRandomIndicatorCat] = useState({});
+
+    const [randomIndicatorCat, setRandomIndicatorCat] = useState({
+        "data": [
+            {
+                "category": "someRandomData"
+            },
+        ]
+    });
+
+    const [randomIndicator, setRandomIndicator] = useState({
+        "data": [
+            {
+                "category": "someRandomData"
+            },
+        ]
+    });
     // TODO (TASK 13): add a state variable to store the app author (default to '')
     const [averages, setAverages] = useState({});
-    const [regions, setRegion] = useState(null);
+    const [regions, setRegion] = useState({
+        "data": [
+            {
+                "category": "someRandomData"
+            },
+        ]
+    });
 
     // The useEffect hook by default runs the provided callback after every render
     // The second (optional) argument, [], is the dependency array which signals
@@ -20,23 +41,25 @@ export default function RegionPage() {
     // changes from the previous render. In this case, an empty array means the callback
     // will only run on the very first render.
     useEffect(() => {
-        // Fetch request to get the song of the day. Fetch runs asynchronously.
-        // The .then() method is called when the fetch request is complete
-        // and proceeds to convert the result to a JSON which is finally placed in state.
-        fetch(`http://${config.server_host}:${config.server_port}/random`)
-            .then(res => res.json())
-            .then(resJson => setRandomIndicator(resJson));
-
-        // TODO (TASK 14): add a fetch call to get the app author (name not pennkey) and store it in the state variable
-        fetch(`http://${config.server_host}:${config.server_port}/top5/:indicator`)
-            .then(res => res.json())
-            .then(resJson => setAverages(resJson));
 
         fetch(`http://${config.server_host}:${config.server_port}/randomIndCat`)
             .then(res => res.json())
             .then(resJson => setRandomIndicatorCat(resJson));
 
+
+        fetch(`http://${config.server_host}:${config.server_port}/indicatorsOnCat/Health`)
+            .then(res => res.json())
+            .then(resJson => setRandomIndicator(resJson));
     }, []);
+
+
+
+
+    console.log(randomIndicatorCat)
+
+
+    //console.log(randomIndicatorCat.data[1])
+    //console.log(randomIndicatorCat.data[2])
 
 
     // TODO (TASK 15): define the columns for the top albums (schema is Album Title, Plays), where Album Title is a link to the album page
@@ -89,16 +112,26 @@ export default function RegionPage() {
             <div>
                 <label>
                     Select Indicator Category
-                    <select>
-                        <option value="randomIndicatorCat">{setRandomIndicator}</option>
-                    </select>
                 </label>
+                <select >
+                    {randomIndicatorCat.data.map((option) => (
+                        <option key={option.category} value={option.category}>
+                            {option.category}
+                        </option>
+                    ))}
+                </select>
+
                 <label>
                     Select Indicator
-                    <select>
-                        <option value="randomIndicator">{setRandomIndicator}</option>
-                    </select>
                 </label>
+                <select>
+                    {randomIndicator.data.map((option) => (
+                        <option key={option.indicator_name} value={option.indicator_name}>
+                            {option.indicator_name}
+                        </option>
+                    ))}
+                </select>
+
                 <label>
                     Select Region
                     <select>
