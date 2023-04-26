@@ -60,7 +60,8 @@ FROM Statistics s
     JOIN Indicators i ON i.indicator_code = s.indicator_code
     JOIN Regions r ON r.sub_region = c.sub_region
                   WHERE s.indicator_code = "${indicator}"
-                  GROUP BY region;
+                  GROUP BY region
+                  ORDER BY AVG DESC;
                     `, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
