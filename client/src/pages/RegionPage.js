@@ -48,7 +48,7 @@ export default function RegionPage() {
     }
     const handleChangeInd = (event) => {
         setValueInd(event.target.value);
-        setValueIndCode(event.target.value);
+        
     }
     const handleChangeRegion = (event) => {
         setValueRegion(event.target.value);
@@ -140,7 +140,7 @@ export default function RegionPage() {
                     Select Indicator:
                 </label>
                 <p></p>
-                <select value={valueInd} onChange={handleChangeCat}>
+                <select value={valueInd} onChange={handleChangeInd}>
                     {randomIndicator.data.map((option) => (
                         <option key={option.indicator_name} value={option.indicator_name}>
                             {option.indicator_name}
