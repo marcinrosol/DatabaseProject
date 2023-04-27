@@ -113,6 +113,11 @@ export default function CountriesPage() {
         }
     ];
 
+    //<p>Selected category: {valueCat}</p>
+    //           <p>Selected indicator: {valueInd}</p>
+    //          <p>Selected indicator Code: {valueIndCode}</p>
+    //         <p>Selected Countries: {valueCountries}</p>
+    //        <p>Encoded indicator: {urlInd}</p>
 
     return (
         <Container>
@@ -154,11 +159,7 @@ export default function CountriesPage() {
                     ))}
                 </select>
 
-                <p>Selected category: {valueCat}</p>
-                <p>Selected indicator: {valueInd}</p>
-                <p>Selected indicator Code: {valueIndCode}</p>
-                <p>Selected Countries: {valueCountries}</p>
-                <p>Encoded indicator: {urlInd}</p>
+
 
 
 
