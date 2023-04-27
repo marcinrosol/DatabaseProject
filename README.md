@@ -1,7 +1,7 @@
 # DatabaseProject
 Web App for 5500
 
-Instructions on 
+Instructions on starting locally
 
 Git Pull Repo
 NPM Install in client, server folder
