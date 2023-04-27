@@ -439,19 +439,17 @@ const peaceful = async function (req, res) {
   const indicatorCat = req.params.indicatorCat;
 
 
-  connection.query(`
-  SELECT name_long, i.indicator_name, gpi_score, (s.2008 + s.2009 + s.2010 + s.2011 + s.2012 + s.2013 + s.2014
-    + s.2015 + s.2016)/9 AS average
-    FROM Countries c
-    JOIN Statistics s on c.name_3_char = s.country_code
-    JOIN Indicators i on i.indicator_code = s.indicator_code
-    WHERE i.category="${indicatorCat}"
-    AND gpi_score > 0
-    AND gpi_score <
-    (SELECT avg(gpi_score)
-    FROM Countries
-    WHERE gpi_score > 0)
-    ORDER BY gpi_score, name_long, indicator_name;
+  connection.query(`SELECT DISTINCT name_long, gpi_score
+  FROM Countries c
+  JOIN Statistics s on c.name_3_char = s.country_code
+  JOIN Indicators i on i.indicator_code = s.indicator_code
+  WHERE i.category= "${indicatorCat}"
+  AND gpi_score > 0
+  AND gpi_score <
+  (SELECT avg(gpi_score)
+  FROM Countries
+  WHERE gpi_score > 0)
+  ORDER BY gpi_score, name_long, indicator_name;
     
 
 
@@ -463,7 +461,7 @@ const peaceful = async function (req, res) {
       console.log(err);
       res.json({});
     } else {
-      res.json({ data });
+      res.json(data);
     }
   });
 }

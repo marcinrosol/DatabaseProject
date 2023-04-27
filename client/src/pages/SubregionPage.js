@@ -178,7 +178,7 @@ export default function RegionPage() {
                 <LazyTable route={`http://${config.server_host}:${config.server_port}/compareOnAvgSub/${valueSubRegion}/${urlInd}`} columns={CountriesToAverage} onChange={handleChangeInd} />
 
                 <h1>Top Sub Regions</h1>
-                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareSubs/${urlInd}`} columns={SubRegionCompare} onChange={handleChangeInd} />
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/compareSubs/${urlInd}`} columns={SubRegionCompare} onChange={handleChangeCat} />
 
 
 

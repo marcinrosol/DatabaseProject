@@ -100,6 +100,19 @@ export default function CountriesPage() {
         }
     ];
 
+    const peacefulCountries = [
+        {
+            field: 'name_long',
+            headerName: 'Country',
+
+        },
+        {
+            field: 'gpi_score',
+            headerName: 'GPI Score',
+
+        }
+    ];
+
 
     return (
         <Container>
@@ -155,6 +168,8 @@ export default function CountriesPage() {
 
 
                 <h1>Peaceful Countries</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/peaceful/${valueCat}`} columns={peacefulCountries} onChange={handleChangeInd} />
+
 
             </div>
         </Container>
