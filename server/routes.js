@@ -362,7 +362,7 @@ ORDER BY AVG DESC;
       console.log(err);
       res.json({
         country: "New Zealand",
-          Avg: "10.1111111"
+        Avg: "10.1111111"
       });
     } else {
       res.json(data);

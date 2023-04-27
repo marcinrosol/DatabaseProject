@@ -36,8 +36,8 @@ export default function CountriesPage() {
 
     const [valueIndCode, setValueIndCode] = React.useState('IC_TAX_PAYM');
 
-    const [valueCat, setValueCat] = React.useState('Jobs');
-    const [valueInd, setValueInd] = React.useState('Tax payments (number)');
+    const [valueCat, setValueCat] = React.useState('Health');
+    const [valueInd, setValueInd] = React.useState('Tuberculosis death rate (per 100,000 people)');
 
     const [valueCountries, setValueCountries] = React.useState('Belgium');
 
