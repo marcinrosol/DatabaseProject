@@ -1,0 +1,43 @@
+CREATE DATABASE cis5500groupDB;
+
+USE cis5500groupDB;
+
+CREATE TABLE Regions (
+	sub_region VARCHAR (40),
+region VARCHAR (10),
+PRIMARY KEY (sub_region)
+);
+
+
+CREATE TABLE Countries (
+	name_long VARCHAR (50) NOT NULL,
+	name_3_char VARCHAR (3),
+	sub_region VARCHAR (40),
+	prcnt_non_relig DECIMAL(3,2),
+	gpi_score DECIMAL(3,1),
+PRIMARY KEY (name_3_char),
+FOREIGN KEY (sub_region) REFERENCES Regions(sub_region)
+);
+
+CREATE TABLE Indicators (
+	indicator_code VARCHAR (30),
+	indicator_name VARCHAR (200) NOT NULL,
+	category VARCHAR (30),
+PRIMARY KEY (indicator_code)
+);
+
+CREATE TABLE Statistics (
+	indicator_code VARCHAR (30),
+	country_code VARCHAR (3),
+	`2008` DECIMAL(20,2) DEFAULT NULL,
+    `2009` DECIMAL(20,2) DEFAULT NULL,
+    `2010` DECIMAL(20,2) DEFAULT NULL,
+    `2011` DECIMAL(20,2) DEFAULT NULL,
+    `2012` DECIMAL(20,2) DEFAULT NULL,
+    `2013` DECIMAL(20,2) DEFAULT NULL,
+    `2014` DECIMAL(20,2) DEFAULT NULL,
+    `2015` DECIMAL(20,2) DEFAULT NULL,
+    `2016` DECIMAL(20,2) DEFAULT NULL,
+	PRIMARY KEY (indicator_code, country_code),
+    FOREIGN KEY (indicator_code) REFERENCES Indicators(indicator_code),
+    FOREIGN KEY (country_code) REFERENCES Countries(name_3_char));
