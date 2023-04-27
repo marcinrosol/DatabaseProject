@@ -121,7 +121,7 @@ export default function CountriesPage() {
 
     return (
         <Container>
-            <h1>This is the Country page</h1>
+            <h1>Country</h1>
             <div>
                 <label>
                     Select Indicator Category:

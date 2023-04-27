@@ -10,7 +10,7 @@ const config = require('../config.json');
 export default function HomePage() {
     // We use the setState hook to persist information across renders (such as the result of our API calls)
     const [randomIndicator, setRandomIndicator] = useState({
-        "indicator_code":"","indicator_name":""
+        "indicator_code": "", "indicator_name": ""
     });
     // TODO (TASK 13): add a state variable to store the app author (default to '')
     const [count, setCount] = useState(0);
@@ -72,9 +72,10 @@ export default function HomePage() {
 
     return (
         <Container>
+            <h1>Home</h1>
             <button onClick={() => setCount(count + 1)}>Generate Random Indicator</button>
             <h2>Randomly generated indicator is:&nbsp;
-                {randomIndicator.indicator_name} {randomIndicator.indicator_code}
+                {randomIndicator.indicator_name}
             </h2>
             <h1>Top 5 Regions</h1>
             <LazyTable route={`http://${config.server_host}:${config.server_port}/top5/${randomIndicator.indicator_code}`} columns={top5Regions} />

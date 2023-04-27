@@ -39,10 +39,10 @@ export default function RegionPage() {
 
     const [valueIndCode, setValueIndCode] = React.useState('IC_TAX_PAYM');
 
-    const [valueCat, setValueCat] = React.useState('Health');
-    const [valueInd, setValueInd] = React.useState('Maternal mortality ratio (modeled estimate, per 100,000 live births)');
+    const [valueCat, setValueCat] = React.useState('Gender');
+    const [valueInd, setValueInd] = React.useState('Children out of school, primary, male');
 
-    const [valueSubRegion, setValueSubRegion] = React.useState('Australia and New Zealand');
+    const [valueSubRegion, setValueSubRegion] = React.useState('Western Europe');
 
     const handleChangeCat = (event) => {
         setValueCat(event.target.value);
@@ -130,7 +130,7 @@ export default function RegionPage() {
 
     return (
         <Container>
-            <h1>This is the Sub Region page</h1>
+            <h1>Sub Region</h1>
             <div>
                 <label>
                     Select Indicator Category:

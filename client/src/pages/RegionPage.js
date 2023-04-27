@@ -128,7 +128,7 @@ export default function RegionPage() {
     //            <p>Encoded indicator: {urlInd}</p>
     return (
         <Container>
-            <h1>This is the Region page</h1>
+            <h1>Region</h1>
             <div>
                 <label>
                     Select Indicator Category:
