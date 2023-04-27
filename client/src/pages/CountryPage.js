@@ -100,6 +100,24 @@ export default function CountriesPage() {
         }
     ];
 
+    const peacefulCountries = [
+        {
+            field: 'name_long',
+            headerName: 'Country',
+
+        },
+        {
+            field: 'gpi_score',
+            headerName: 'GPI Score',
+
+        }
+    ];
+
+    //<p>Selected category: {valueCat}</p>
+    //           <p>Selected indicator: {valueInd}</p>
+    //          <p>Selected indicator Code: {valueIndCode}</p>
+    //         <p>Selected Countries: {valueCountries}</p>
+    //        <p>Encoded indicator: {urlInd}</p>
 
     return (
         <Container>
@@ -141,11 +159,7 @@ export default function CountriesPage() {
                     ))}
                 </select>
 
-                <p>Selected category: {valueCat}</p>
-                <p>Selected indicator: {valueInd}</p>
-                <p>Selected indicator Code: {valueIndCode}</p>
-                <p>Selected Countries: {valueCountries}</p>
-                <p>Encoded indicator: {urlInd}</p>
+
 
 
 
@@ -155,6 +169,8 @@ export default function CountriesPage() {
 
 
                 <h1>Peaceful Countries</h1>
+                <LazyTable route={`http://${config.server_host}:${config.server_port}/peaceful/${valueCat}`} columns={peacefulCountries} onChange={handleChangeInd} />
+
 
             </div>
         </Container>
